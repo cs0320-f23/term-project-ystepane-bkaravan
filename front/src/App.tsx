@@ -10,10 +10,12 @@ import PromptBox from "./PromptBox";
 function App() {
   return (
     <div className="App">
-      <hr>Urban Studies</hr>
+      {/* <p className="App-header">
+        <h1>Urban Studies</h1>
+      </p> */}
       {/* TODO: PLACE MAP CONTENT HERE */}
       <MapBox />
-      <PromptBox/>
+      <PromptBox />
     </div>
   );
 }

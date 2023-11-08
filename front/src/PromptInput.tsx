@@ -12,10 +12,11 @@ export default function PromptInput() {
   const [searchQ, setSearchQ] = useState<string>("");
   function handleSubmit(query: string) {
     console.log(query);
+    setSearchQ("");
   }
 
   return (
-    <div className="repl-input">
+    <div className="promptinput">
       <fieldset>
         <legend>Enter a search:</legend>
         <ControlledInput

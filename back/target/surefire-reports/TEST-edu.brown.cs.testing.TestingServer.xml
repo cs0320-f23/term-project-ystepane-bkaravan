@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="edu.brown.cs.testing.TestingServer" time="5.191" tests="23" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="17"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="C:\Users\karav\OneDrive\Documents\CS32\server-bkaravan-jtao25\target\test-classes;C:\Users\karav\OneDrive\Documents\CS32\server-bkaravan-jtao25\target\classes;C:\Users\karav\.m2\repository\com\squareup\moshi\moshi\1.13.0\moshi-1.13.0.jar;C:\Users\karav\.m2\repository\com\squareup\okio\okio\2.10.0\okio-2.10.0.jar;C:\Users\karav\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib\1.4.20\kotlin-stdlib-1.4.20.jar;C:\Users\karav\.m2\repository\org\jetbrains\annotations\13.0\annotations-13.0.jar;C:\Users\karav\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-common\1.4.20\kotlin-stdlib-common-1.4.20.jar;C:\Users\karav\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-jdk8\1.6.0\kotlin-stdlib-jdk8-1.6.0.jar;C:\Users\karav\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-jdk7\1.6.0\kotlin-stdlib-jdk7-1.6.0.jar;C:\Users\karav\.m2\repository\com\squareup\moshi\moshi-adapters\1.13.0\moshi-adapters-1.13.0.jar;C:\Users\karav\.m2\repository\com\sparkjava\spark-core\2.9.3\spark-core-2.9.3.jar;C:\Users\karav\.m2\repository\org\slf4j\slf4j-api\1.7.25\slf4j-api-1.7.25.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-server\9.4.31.v20200723\jetty-server-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\javax\servlet\javax.servlet-api\3.1.0\javax.servlet-api-3.1.0.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-http\9.4.31.v20200723\jetty-http-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-util\9.4.31.v20200723\jetty-util-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-io\9.4.31.v20200723\jetty-io-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-webapp\9.4.31.v20200723\jetty-webapp-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-xml\9.4.31.v20200723\jetty-xml-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-servlet\9.4.31.v20200723\jetty-servlet-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-security\9.4.31.v20200723\jetty-security-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\websocket\websocket-server\9.4.31.v20200723\websocket-server-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\websocket\websocket-common\9.4.31.v20200723\websocket-common-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\websocket\websocket-client\9.4.31.v20200723\websocket-client-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-client\9.4.31.v20200723\jetty-client-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\websocket\websocket-servlet\9.4.31.v20200723\websocket-servlet-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\websocket\websocket-api\9.4.31.v20200723\websocket-api-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\testng\testng\7.8.0\testng-7.8.0.jar;C:\Users\karav\.m2\repository\com\beust\jcommander\1.82\jcommander-1.82.jar;C:\Users\karav\.m2\repository\org\webjars\jquery\3.6.1\jquery-3.6.1.jar;C:\Users\karav\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.4.0\junit-jupiter-engine-5.4.0.jar;C:\Users\karav\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\karav\.m2\repository\org\junit\platform\junit-platform-engine\1.4.0\junit-platform-engine-1.4.0.jar;C:\Users\karav\.m2\repository\org\opentest4j\opentest4j\1.1.1\opentest4j-1.1.1.jar;C:\Users\karav\.m2\repository\org\junit\platform\junit-platform-commons\1.4.0\junit-platform-commons-1.4.0.jar;C:\Users\karav\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.4.0\junit-jupiter-api-5.4.0.jar;"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="America/New_York"/>
+    <property name="os.name" value="Windows 11"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="C:\Users\karav\.jdks\openjdk-17\jdk-17.0.8\bin"/>
+    <property name="sun.java.command" value="C:\Users\karav\AppData\Local\Temp\surefire3492742513556932284\surefirebooter-20230929184432612_3.jar C:\Users\karav\AppData\Local\Temp\surefire3492742513556932284 2023-09-29T18-44-32_222-jvmRun1 surefire-20230929184432612_1tmp surefire_0-20230929184432612_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="C:\Users\karav\OneDrive\Documents\CS32\server-bkaravan-jtao25\target\test-classes;C:\Users\karav\OneDrive\Documents\CS32\server-bkaravan-jtao25\target\classes;C:\Users\karav\.m2\repository\com\squareup\moshi\moshi\1.13.0\moshi-1.13.0.jar;C:\Users\karav\.m2\repository\com\squareup\okio\okio\2.10.0\okio-2.10.0.jar;C:\Users\karav\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib\1.4.20\kotlin-stdlib-1.4.20.jar;C:\Users\karav\.m2\repository\org\jetbrains\annotations\13.0\annotations-13.0.jar;C:\Users\karav\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-common\1.4.20\kotlin-stdlib-common-1.4.20.jar;C:\Users\karav\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-jdk8\1.6.0\kotlin-stdlib-jdk8-1.6.0.jar;C:\Users\karav\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-jdk7\1.6.0\kotlin-stdlib-jdk7-1.6.0.jar;C:\Users\karav\.m2\repository\com\squareup\moshi\moshi-adapters\1.13.0\moshi-adapters-1.13.0.jar;C:\Users\karav\.m2\repository\com\sparkjava\spark-core\2.9.3\spark-core-2.9.3.jar;C:\Users\karav\.m2\repository\org\slf4j\slf4j-api\1.7.25\slf4j-api-1.7.25.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-server\9.4.31.v20200723\jetty-server-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\javax\servlet\javax.servlet-api\3.1.0\javax.servlet-api-3.1.0.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-http\9.4.31.v20200723\jetty-http-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-util\9.4.31.v20200723\jetty-util-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-io\9.4.31.v20200723\jetty-io-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-webapp\9.4.31.v20200723\jetty-webapp-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-xml\9.4.31.v20200723\jetty-xml-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-servlet\9.4.31.v20200723\jetty-servlet-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-security\9.4.31.v20200723\jetty-security-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\websocket\websocket-server\9.4.31.v20200723\websocket-server-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\websocket\websocket-common\9.4.31.v20200723\websocket-common-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\websocket\websocket-client\9.4.31.v20200723\websocket-client-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\jetty-client\9.4.31.v20200723\jetty-client-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\websocket\websocket-servlet\9.4.31.v20200723\websocket-servlet-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\eclipse\jetty\websocket\websocket-api\9.4.31.v20200723\websocket-api-9.4.31.v20200723.jar;C:\Users\karav\.m2\repository\org\testng\testng\7.8.0\testng-7.8.0.jar;C:\Users\karav\.m2\repository\com\beust\jcommander\1.82\jcommander-1.82.jar;C:\Users\karav\.m2\repository\org\webjars\jquery\3.6.1\jquery-3.6.1.jar;C:\Users\karav\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.4.0\junit-jupiter-engine-5.4.0.jar;C:\Users\karav\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\karav\.m2\repository\org\junit\platform\junit-platform-engine\1.4.0\junit-platform-engine-1.4.0.jar;C:\Users\karav\.m2\repository\org\opentest4j\opentest4j\1.1.1\opentest4j-1.1.1.jar;C:\Users\karav\.m2\repository\org\junit\platform\junit-platform-commons\1.4.0\junit-platform-commons-1.4.0.jar;C:\Users\karav\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.4.0\junit-jupiter-api-5.4.0.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\karav"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2023-07-18"/>
+    <property name="java.home" value="C:\Users\karav\.jdks\openjdk-17\jdk-17.0.8"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\karav\OneDrive\Documents\CS32\server-bkaravan-jtao25"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="C:\Users\karav\AppData\Local\Temp\surefire3492742513556932284\surefirebooter-20230929184432612_3.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="17.0.8+9-LTS-211"/>
+    <property name="user.name" value="karav"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="localRepository" value="C:\Users\karav\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="jetty.git.hash" value="450ba27947e13e66baa8cd1ce7e85a4461cacc1d"/>
+    <property name="java.io.tmpdir" value="C:\Users\karav\AppData\Local\Temp\"/>
+    <property name="java.version" value="17.0.8"/>
+    <property name="user.dir" value="C:\Users\karav\OneDrive\Documents\CS32\server-bkaravan-jtao25"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Users\karav\.jdks\openjdk-17\jdk-17.0.8\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Users\karav\miniconda3;C:\Users\karav\miniconda3\Library\mingw-w64\bin;C:\Users\karav\miniconda3\Library\usr\bin;C:\Users\karav\miniconda3\Library\bin;C:\Users\karav\miniconda3\Scripts;C:\Users\karav\miniconda3\bin;C:\Users\karav\miniconda3\condabin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\nodejs;C:\Program Files\Git\cmd;C:\mingw64;C:\mingw64\bin;C:\Program Files\Java\jdk-17\bin;C:\Users\karav\OneDrive\Documents\Maven\apache-maven-3.9.4\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\MATLAB\R2023b\bin;C:\Users\karav\AppData\Local\Microsoft\WindowsApps;C:\Users\karav\AppData\Roaming\npm;C:\Users\karav\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Java\jdk-17\bin;C:\Users\karav\.jdks\openjdk-17\jdk-17.0.8\bin;.;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="17.0.8+9-LTS-211"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="broadbandNoCountyFound" classname="edu.brown.cs.testing.TestingServer" time="2.157">
+    <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+]]></system-err>
+  </testcase>
+  <testcase name="searchCSVNotFound" classname="edu.brown.cs.testing.TestingServer" time="0.008"/>
+  <testcase name="testViewNoFileLoadedMock" classname="edu.brown.cs.testing.TestingServer" time="0.002"/>
+  <testcase name="testSearchCSVMissingArgHeader" classname="edu.brown.cs.testing.TestingServer" time="0.006"/>
+  <testcase name="searchCSVNotFoundAllArgs" classname="edu.brown.cs.testing.TestingServer" time="0.006"/>
+  <testcase name="testSearchCSVMissingArgSearch" classname="edu.brown.cs.testing.TestingServer" time="0.006"/>
+  <testcase name="testViewCSVSuccess" classname="edu.brown.cs.testing.TestingServer" time="0.007"/>
+  <testcase name="testSearchMockedDatasourceFoundAllArgs" classname="edu.brown.cs.testing.TestingServer" time="0.004"/>
+  <testcase name="testSearchMockedDatasourceNotFound" classname="edu.brown.cs.testing.TestingServer" time="0.003"/>
+  <testcase name="broadbandNoArgsFound" classname="edu.brown.cs.testing.TestingServer" time="0.003"/>
+  <testcase name="searchCSVFoundAllArgs" classname="edu.brown.cs.testing.TestingServer" time="0.006"/>
+  <testcase name="testSearchMockedDatasourceFound2Args" classname="edu.brown.cs.testing.TestingServer" time="0.004"/>
+  <testcase name="broadbandNoStateFound" classname="edu.brown.cs.testing.TestingServer" time="1.079"/>
+  <testcase name="testAPILoadCSVFileError" classname="edu.brown.cs.testing.TestingServer" time="0.007"/>
+  <testcase name="searchCSVFoundNoHeader" classname="edu.brown.cs.testing.TestingServer" time="0.005"/>
+  <testcase name="testSearchNoFileLoaded" classname="edu.brown.cs.testing.TestingServer" time="0.003"/>
+  <testcase name="searchCSVFoundNoNarrow" classname="edu.brown.cs.testing.TestingServer" time="0.004"/>
+  <testcase name="testViewFileLoadedMocked" classname="edu.brown.cs.testing.TestingServer" time="0.002"/>
+  <testcase name="testViewNoFileLoaded" classname="edu.brown.cs.testing.TestingServer" time="0.002"/>
+  <testcase name="testLoadCSVSuccessWithHeader" classname="edu.brown.cs.testing.TestingServer" time="0.289"/>
+  <testcase name="broadbandFound" classname="edu.brown.cs.testing.TestingServer" time="1.539"/>
+  <testcase name="testLoadCSVSuccessNoHeader" classname="edu.brown.cs.testing.TestingServer" time="0.003"/>
+  <testcase name="testLoadCSVMissingFilepath" classname="edu.brown.cs.testing.TestingServer" time="0.002"/>
+</testsuite>

@@ -4,24 +4,31 @@
   give you this starter CSS. Feel free to modify it as you wish, though.
 */
 
-.repl {
+.promptbox {
   position: relative;
   min-height: 95vh;
 }
 
-.repl-history {
-  height: 55vh;
-  margin: auto;
-  display: block;
-  overflow: scroll;
+.mapbox-container {
+  position: relative;
+  width: 10vw; /* You can adjust the width based on your layout requirements */
+  height: 25vh; /* Set a fixed height or adjust it according to your needs */
+  margin: 0 auto; /* Center the container horizontally */
 }
 
-.repl-input {
+.mapbox {
+  width: 100%; /* Make the map fill the container */
+  height: 100%; /* Make the map fill the container */
+}
+
+.promptinput {
+  position: relative;
   margin: auto;
-  height: 10vh;
+  height: 15vh;
+  width: auto;
 }
 .repl-command-box {
-  width: 90%;
+  width: 40%;
   margin: auto;
   display: block;
 }

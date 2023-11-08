@@ -11,8 +11,8 @@ export default function PromptBox() {
   const [file, setFile] = useState<string[][]>([[]]);
 
   return (
-    <div className="prompt" aria-label="Prompt box">
-      <hr>Search Queries</hr>
+    <div className="promptbox" aria-label="Prompt box">
+      {/* <hr>Search Queries</hr> */}
       <PromptInput
       // commands={history}
       // file={file}

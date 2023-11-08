@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BroadbandHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">s0</a> &gt; <a href="index.source.html" class="el_package">edu.brown.cs.student.main.handlers</a> &gt; <span class="el_source">BroadbandHandler.java</span></div><h1>BroadbandHandler.java</h1><pre class="source lang-java linenums">package edu.brown.cs.student.main.handlers;
+
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+import com.squareup.moshi.Types;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import okio.Buffer;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+
+/**
+ * The BroadbandHandler class handles HTTP requests related to broadband data retrieval. It
+ * communicates with an external ACS API to fetch data on broadband access for a user-specified
+ * state and county. Implements the `Route` Spark interface in order to create a mapping between the
+ * HTTP request path.
+ */
+<span class="fc" id="L23">public class BroadbandHandler implements Route {</span>
+
+  /**
+   * Method that handles an HTTP request to fetch broadband data for a specified state and county.
+   * This method communicates with an external ACS API to retrieve broadband access statistics, and
+   * constructs an HTTP response containing the retrieved data or appropriate error messages.
+   *
+   * @param request the HTTP request containing query parameters for state and county.
+   * @param response the HTTP response to be populated with broadband data or error messages.
+   * @return null, as the data or error messages are added to the HTTP response.
+   * @throws Exception if an error occurs during data retrieval or processing.
+   */
+  @Override
+  public Object handle(Request request, Response response) throws Exception {
+    // get date and time
+<span class="fc" id="L38">    String timestamp = getDateTime();</span>
+    // setup our moshi to send the response back to the user
+<span class="fc" id="L40">    Moshi moshi = new Moshi.Builder().build();</span>
+<span class="fc" id="L41">    Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);</span>
+<span class="fc" id="L42">    JsonAdapter&lt;Map&lt;String, Object&gt;&gt; responseAdapter = moshi.adapter(mapStringObject);</span>
+<span class="fc" id="L43">    Map&lt;String, Object&gt; responseMap = new HashMap&lt;&gt;();</span>
+    // request parameters
+<span class="fc" id="L45">    String stateName = request.queryParams(&quot;state&quot;);</span>
+<span class="fc" id="L46">    String countyName = request.queryParams(&quot;county&quot;);</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">    if (stateName == null) {</span>
+<span class="fc" id="L48">      responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
+<span class="fc" id="L49">      responseMap.put(&quot;error_type&quot;, &quot;bad_request&quot;);</span>
+<span class="fc" id="L50">      return responseAdapter.toJson(responseMap);</span>
+    }
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">    if (countyName == null) {</span>
+<span class="nc" id="L53">      responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
+<span class="nc" id="L54">      responseMap.put(&quot;error_type&quot;, &quot;bad_request&quot;);</span>
+<span class="nc" id="L55">      return responseAdapter.toJson(responseMap);</span>
+    }
+    // retrieve code for state and county
+<span class="fc" id="L58">    String stateCode = getStateCode(stateName);</span>
+<span class="fc" id="L59">    String countyCode = getCountyCode(stateCode, countyName);</span>
+
+    // if we got both the statecode and the county code
+<span class="fc bfc" id="L62" title="All 4 branches covered.">    if (!stateCode.equals(&quot;null&quot;) &amp;&amp; !countyCode.equals(&quot;null&quot;)) {</span>
+
+      try {
+        // set up the URL
+<span class="fc" id="L66">        String apiUrl =</span>
+            &quot;https://api.census.gov/data/2021/acs/acs1/subject/variables?get=NAME,S2802_C03_001E&amp;for=county:&quot;
+                + countyCode
+                + &quot;&amp;in=state:&quot;
+                + stateCode;
+
+<span class="fc" id="L72">        URL url = new URL(apiUrl);</span>
+
+<span class="fc" id="L74">        HttpURLConnection requestURL = (HttpURLConnection) url.openConnection();</span>
+
+<span class="fc" id="L76">        int responseCode = requestURL.getResponseCode();</span>
+        // check that the response was good
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        if (responseCode == HttpURLConnection.HTTP_OK) {</span>
+          // deserialize the response
+<span class="fc" id="L80">          JsonAdapter&lt;List&lt;String[]&gt;&gt; adapter =</span>
+<span class="fc" id="L81">              moshi.adapter(Types.newParameterizedType(List.class, String[].class));</span>
+          // try to read from the file and get the data
+<span class="fc" id="L83">          try (Buffer newBuffer = new Buffer().readFrom(requestURL.getInputStream())) {</span>
+
+<span class="fc" id="L85">            List&lt;String[]&gt; jsonResponse = adapter.fromJson(newBuffer);</span>
+
+            // get data from json, it is the row of index one, second entry for broadband access
+            // data
+<span class="fc" id="L89">            String broadbandData = jsonResponse.get(1)[1];</span>
+
+            // fill our response map with correct data and send it back
+<span class="fc" id="L92">            responseMap.put(&quot;result&quot;, &quot;success&quot;);</span>
+<span class="fc" id="L93">            responseMap.put(&quot;state&quot;, stateName);</span>
+<span class="fc" id="L94">            responseMap.put(&quot;county&quot;, countyName);</span>
+<span class="fc" id="L95">            responseMap.put(&quot;timestamp&quot;, timestamp);</span>
+<span class="fc" id="L96">            responseMap.put(&quot;broadband_access&quot;, broadbandData);</span>
+<span class="fc" id="L97">            return responseAdapter.toJson(responseMap);</span>
+<span class="nc" id="L98">          } catch (Exception e) {</span>
+<span class="nc" id="L99">            responseMap.put(&quot;error&quot;, &quot;error_bad_json&quot;);</span>
+<span class="nc" id="L100">            return responseAdapter.toJson(responseMap);</span>
+          }
+        } else {
+          // handle failed API request
+<span class="nc" id="L104">          throw new DatasourceException(&quot;API request failed with response code: &quot; + responseCode);</span>
+        }
+<span class="nc" id="L106">      } catch (IOException e) {</span>
+<span class="nc" id="L107">        throw new DatasourceException(e.getMessage());</span>
+<span class="nc" id="L108">      } catch (Exception e) {</span>
+<span class="nc" id="L109">        responseMap.put(&quot;error_type&quot;, e);</span>
+<span class="nc" id="L110">        return responseAdapter.toJson(responseMap);</span>
+      }
+    }
+<span class="fc bfc" id="L113" title="All 2 branches covered.">    if (stateCode.equals(&quot;null&quot;)) {</span>
+<span class="fc" id="L114">      responseMap.put(&quot;no_state&quot;, stateName);</span>
+    }
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">    if (countyCode.equals(&quot;null&quot;)) {</span>
+<span class="fc" id="L117">      responseMap.put(&quot;no_county&quot;, countyName);</span>
+    }
+<span class="fc" id="L119">    responseMap.put(&quot;error_type&quot;, &quot;error_bad_request&quot;);</span>
+<span class="fc" id="L120">    return responseAdapter.toJson(responseMap);</span>
+  }
+
+  /**
+   * Helper method that retrieves the current date and time of the request in a specific format.
+   *
+   * @return a formatted string representing the current date and time.
+   */
+  private String getDateTime() {
+<span class="fc" id="L129">    SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span>
+<span class="fc" id="L130">    Date now = new Date();</span>
+<span class="fc" id="L131">    return dateFormat.format(now);</span>
+  }
+
+  /**
+   * Helper method that makes an API request to retrieve the state code based on the provided state
+   * name. Returns null if state name not found.
+   *
+   * @param stateName the name of the state for which to retrieve the code.
+   * @return the state code corresponding to the provided state name.
+   * @throws IOException if an error occurs during the API request.
+   */
+  private String getStateCode(String stateName) throws IOException {
+    // make an API request to get the state code based on the state name provided
+<span class="fc" id="L144">    String apiUrl = &quot;https://api.census.gov/data/2010/dec/sf1?get=NAME&amp;for=state:*&quot;;</span>
+<span class="fc" id="L145">    HttpURLConnection connection = (HttpURLConnection) new URL(apiUrl).openConnection();</span>
+    try {
+<span class="fc" id="L147">      connection.setRequestMethod(&quot;GET&quot;);</span>
+<span class="fc" id="L148">      connection.connect();</span>
+
+<span class="fc" id="L150">      int responseCode = connection.getResponseCode();</span>
+
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">      if (responseCode == HttpURLConnection.HTTP_OK) {</span>
+<span class="fc" id="L153">        Moshi moshi = new Moshi.Builder().build();</span>
+<span class="fc" id="L154">        JsonAdapter&lt;List&lt;List&lt;String&gt;&gt;&gt; adapter =</span>
+<span class="fc" id="L155">            moshi.adapter(Types.newParameterizedType(List.class, List.class));</span>
+
+        // parse the json response into a List
+<span class="fc" id="L158">        List&lt;List&lt;String&gt;&gt; jsonResponse =</span>
+<span class="fc" id="L159">            adapter.fromJson(new Buffer().readFrom(connection.getInputStream()));</span>
+
+        // iterate through the list to find the state code for the target state name
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        for (List&lt;String&gt; row : jsonResponse) {</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">          if (row.size() &gt;= 2) {</span>
+<span class="fc" id="L164">            String name = row.get(0);</span>
+<span class="fc" id="L165">            String code = row.get(1);</span>
+
+<span class="fc bfc" id="L167" title="All 2 branches covered.">            if (stateName.equalsIgnoreCase(name)) {</span>
+              //              System.out.println(stateName + &quot;: &quot; + code);
+<span class="fc" id="L169">              return code;</span>
+            }
+          }
+<span class="fc" id="L172">        }</span>
+      }
+<span class="nc" id="L174">    } catch (Exception e) {</span>
+<span class="nc" id="L175">      System.out.println(e);</span>
+    } finally {
+<span class="fc" id="L177">      connection.disconnect();</span>
+    }
+<span class="fc" id="L179">    return &quot;null&quot;;</span>
+  }
+
+  /**
+   * Helper method that makes an API request to retrieve the county code based on the provided state
+   * code and county name. Returns null if county name not found.
+   *
+   * @param stateCode the state code for the target state.
+   * @param countyName the name of the county for which to retrieve the code.
+   * @return the county code corresponding to the provided state code and county name.
+   * @throws IOException if an error occurs during the API request.
+   */
+  private String getCountyCode(String stateCode, String countyName) throws IOException {
+    // api request to get county code based on county name and state code
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">    if (stateCode != null) {</span>
+<span class="fc" id="L194">      String apiUrl =</span>
+          &quot;https://api.census.gov/data/2010/dec/sf1?get=NAME&amp;for=county:*&amp;in=state:&quot; + stateCode;
+
+<span class="fc" id="L197">      HttpURLConnection connection = (HttpURLConnection) new URL(apiUrl).openConnection();</span>
+
+      try {
+<span class="fc" id="L200">        connection.setRequestMethod(&quot;GET&quot;);</span>
+<span class="fc" id="L201">        connection.connect();</span>
+
+<span class="fc" id="L203">        int responseCode = connection.getResponseCode();</span>
+
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (responseCode == HttpURLConnection.HTTP_OK) {</span>
+<span class="fc" id="L206">          Moshi moshi = new Moshi.Builder().build();</span>
+<span class="fc" id="L207">          JsonAdapter&lt;List&lt;List&lt;String&gt;&gt;&gt; adapter =</span>
+<span class="fc" id="L208">              moshi.adapter(Types.newParameterizedType(List.class, List.class));</span>
+
+          // Parse the JSON response into a List
+<span class="fc" id="L211">          List&lt;List&lt;String&gt;&gt; jsonResponse =</span>
+<span class="fc" id="L212">              adapter.fromJson(new Buffer().readFrom(connection.getInputStream()));</span>
+
+          // Iterate through the list to find the county code for the target county name
+<span class="fc bfc" id="L215" title="All 2 branches covered.">          for (List&lt;String&gt; row : jsonResponse) {</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">            if (row.size() &gt;= 3) {</span>
+<span class="fc" id="L217">              String fullName = row.get(0);</span>
+              //              String sCode = row.get(1);
+<span class="fc" id="L219">              String countyCode = row.get(2);</span>
+              // Split the full name to extract the county name
+<span class="fc" id="L221">              String[] parts = fullName.split(&quot;,&quot;);</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">              if (parts.length &gt;= 2) {</span>
+<span class="fc" id="L223">                String cName = parts[0].trim(); // Extracted county name</span>
+
+                // Check if the county name and state match the user's request
+<span class="fc bfc" id="L226" title="All 2 branches covered.">                if (countyName.equalsIgnoreCase(cName)) {</span>
+                  //                  System.out.println(countyName + &quot;: &quot; + countyCode);
+
+<span class="fc" id="L229">                  return countyCode;</span>
+                }
+              }
+            }
+<span class="fc" id="L233">          }</span>
+        }
+<span class="nc" id="L235">      } catch (Exception e) {</span>
+<span class="nc" id="L236">        System.out.println(e);</span>
+      } finally {
+<span class="fc" id="L238">        connection.disconnect();</span>
+      }
+    }
+
+    // Return null if county name not found
+<span class="fc" id="L243">    return &quot;null&quot;;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
