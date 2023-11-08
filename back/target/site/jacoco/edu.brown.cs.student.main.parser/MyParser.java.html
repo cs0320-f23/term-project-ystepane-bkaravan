@@ -78,7 +78,7 @@ public class MyParser&lt;T&gt; implements Iterable&lt;T&gt; {
    * @return the dataset, which is an ArrayList of T objects after parsing the file
    */
   public ArrayList&lt;T&gt; getDataset() {
-<span class="fc" id="L81">    return new ArrayList&lt;&gt;(this.dataset);</span>
+<span class="fc" id="L81">    return this.dataset;</span>
   }
 
   public Iterator&lt;T&gt; iterator() {

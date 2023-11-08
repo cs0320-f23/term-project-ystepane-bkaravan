@@ -22,6 +22,7 @@ import spark.Route;
  * between the HTTP request path.
  */
 public class SearchHandler implements Route {
+
   private final Dataset data;
 
   /**
@@ -29,9 +30,9 @@ public class SearchHandler implements Route {
    *
    * @param current the Dataset to be used for searching.
    */
-<span class="fc" id="L32">  public SearchHandler(Dataset current) {</span>
-<span class="fc" id="L33">    this.data = current;</span>
-<span class="fc" id="L34">  }</span>
+<span class="fc" id="L33">  public SearchHandler(Dataset current) {</span>
+<span class="fc" id="L34">    this.data = current;</span>
+<span class="fc" id="L35">  }</span>
   // narrow = &quot;ind: 0&quot; &quot;nam: someName&quot;
 
   /**
@@ -48,64 +49,64 @@ public class SearchHandler implements Route {
   @Override
   public Object handle(Request request, Response response) throws Exception {
     // setup moshi
-<span class="fc" id="L51">    Moshi moshi = new Moshi.Builder().build();</span>
-<span class="fc" id="L52">    Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);</span>
-<span class="fc" id="L53">    JsonAdapter&lt;Map&lt;String, Object&gt;&gt; adapter = moshi.adapter(mapStringObject);</span>
-<span class="fc" id="L54">    Map&lt;String, Object&gt; responseMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L52">    Moshi moshi = new Moshi.Builder().build();</span>
+<span class="fc" id="L53">    Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);</span>
+<span class="fc" id="L54">    JsonAdapter&lt;Map&lt;String, Object&gt;&gt; adapter = moshi.adapter(mapStringObject);</span>
+<span class="fc" id="L55">    Map&lt;String, Object&gt; responseMap = new HashMap&lt;&gt;();</span>
     try {
       // check if we loaded anything
-<span class="fc" id="L57">      List&lt;List&lt;String&gt;&gt; currentData = this.data.getDataset();</span>
-<span class="fc bfc" id="L58" title="All 2 branches covered.">      if (currentData.isEmpty()) {</span>
-<span class="fc" id="L59">        responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
-<span class="fc" id="L60">        responseMap.put(&quot;error_type&quot;, &quot;No files are loaded&quot;);</span>
-<span class="fc" id="L61">        return adapter.toJson(responseMap);</span>
+<span class="fc" id="L58">      List&lt;List&lt;String&gt;&gt; currentData = this.data.getDataset();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">      if (currentData.isEmpty()) {</span>
+<span class="fc" id="L60">        responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
+<span class="fc" id="L61">        responseMap.put(&quot;error_type&quot;, &quot;No files are loaded&quot;);</span>
+<span class="fc" id="L62">        return adapter.toJson(responseMap);</span>
       }
 
-<span class="fc" id="L64">      String search = request.queryParams(&quot;search&quot;);</span>
+<span class="fc" id="L65">      String search = request.queryParams(&quot;search&quot;);</span>
       // check search parameter - required
-<span class="fc bfc" id="L66" title="All 2 branches covered.">      if (search == null) {</span>
-<span class="fc" id="L67">        responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
-<span class="fc" id="L68">        responseMap.put(&quot;error_type&quot;, &quot;missing_parameter&quot;);</span>
-<span class="fc" id="L69">        responseMap.put(&quot;error_arg&quot;, &quot;search&quot;);</span>
-<span class="fc" id="L70">        return adapter.toJson(responseMap);</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">      if (search == null) {</span>
+<span class="fc" id="L68">        responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
+<span class="fc" id="L69">        responseMap.put(&quot;error_type&quot;, &quot;missing_parameter&quot;);</span>
+<span class="fc" id="L70">        responseMap.put(&quot;error_arg&quot;, &quot;search&quot;);</span>
+<span class="fc" id="L71">        return adapter.toJson(responseMap);</span>
       }
-<span class="fc" id="L72">      String headerS = request.queryParams(&quot;header&quot;);</span>
+<span class="fc" id="L73">      String headerS = request.queryParams(&quot;header&quot;);</span>
       // check header parameter - required
-<span class="fc bfc" id="L74" title="All 2 branches covered.">      if (headerS == null) {</span>
-<span class="fc" id="L75">        responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
-<span class="fc" id="L76">        responseMap.put(&quot;error_type&quot;, &quot;missing_parameter&quot;);</span>
-<span class="fc" id="L77">        responseMap.put(&quot;error_arg&quot;, &quot;header&quot;);</span>
-<span class="fc" id="L78">        return adapter.toJson(responseMap);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">      if (headerS == null) {</span>
+<span class="fc" id="L76">        responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
+<span class="fc" id="L77">        responseMap.put(&quot;error_type&quot;, &quot;missing_parameter&quot;);</span>
+<span class="fc" id="L78">        responseMap.put(&quot;error_arg&quot;, &quot;header&quot;);</span>
+<span class="fc" id="L79">        return adapter.toJson(responseMap);</span>
       }
-<span class="fc" id="L80">      String narrow = request.queryParams(&quot;narrow&quot;);</span>
+<span class="fc" id="L81">      String narrow = request.queryParams(&quot;narrow&quot;);</span>
       // check narrow parameter = not required
-<span class="fc bfc" id="L82" title="All 2 branches covered.">      if (narrow == null) {</span>
-<span class="fc" id="L83">        narrow = &quot;NULL&quot;;</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">      if (narrow == null) {</span>
+<span class="fc" id="L84">        narrow = &quot;NULL&quot;;</span>
       }
-<span class="fc" id="L85">      boolean header = headerS.equalsIgnoreCase(&quot;true&quot;);</span>
+<span class="fc" id="L86">      boolean header = headerS.equalsIgnoreCase(&quot;true&quot;);</span>
       // initialize the searcher and look for the words
-<span class="fc" id="L87">      MySearcher searcher = new MySearcher(currentData, header, narrow);</span>
-<span class="fc" id="L88">      searcher.findRows(search);</span>
-<span class="fc" id="L89">      List&lt;List&lt;String&gt;&gt; found = searcher.getFound();</span>
+<span class="fc" id="L88">      MySearcher searcher = new MySearcher(currentData, header, narrow);</span>
+<span class="fc" id="L89">      searcher.findRows(search);</span>
+<span class="fc" id="L90">      List&lt;List&lt;String&gt;&gt; found = searcher.getFound();</span>
       // check the found - throw an exception in searcher?
-<span class="fc bfc" id="L91" title="All 2 branches covered.">      if (found.isEmpty()) {</span>
-<span class="fc" id="L92">        responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
-<span class="fc" id="L93">        responseMap.put(&quot;error_type&quot;, &quot;no match found&quot;);</span>
-<span class="fc" id="L94">        responseMap.put(&quot;search_word&quot;, search);</span>
-<span class="fc bfc" id="L95" title="All 2 branches covered.">        if (!narrow.equals(&quot;NULL&quot;)) {</span>
-<span class="fc" id="L96">          responseMap.put(&quot;specifier&quot;, narrow);</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">      if (found.isEmpty()) {</span>
+<span class="fc" id="L93">        responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
+<span class="fc" id="L94">        responseMap.put(&quot;error_type&quot;, &quot;no match found&quot;);</span>
+<span class="fc" id="L95">        responseMap.put(&quot;search_word&quot;, search);</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (!narrow.equals(&quot;NULL&quot;)) {</span>
+<span class="fc" id="L97">          responseMap.put(&quot;specifier&quot;, narrow);</span>
         }
-<span class="fc" id="L98">        return adapter.toJson(responseMap);</span>
+<span class="fc" id="L99">        return adapter.toJson(responseMap);</span>
       }
 
-<span class="fc" id="L101">      responseMap.put(&quot;result&quot;, &quot;success&quot;);</span>
-<span class="fc" id="L102">      responseMap.put(&quot;view_data&quot;, found);</span>
-<span class="fc" id="L103">      return adapter.toJson(responseMap);</span>
-<span class="nc" id="L104">    } catch (Exception e) {</span>
-<span class="nc" id="L105">      System.out.println(e);</span>
-<span class="nc" id="L106">      responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
-<span class="nc" id="L107">      responseMap.put(&quot;error_type&quot;, e);</span>
-<span class="nc" id="L108">      return adapter.toJson(responseMap);</span>
+<span class="fc" id="L102">      responseMap.put(&quot;result&quot;, &quot;success&quot;);</span>
+<span class="fc" id="L103">      responseMap.put(&quot;view_data&quot;, found);</span>
+<span class="fc" id="L104">      return adapter.toJson(responseMap);</span>
+<span class="nc" id="L105">    } catch (Exception e) {</span>
+<span class="nc" id="L106">      System.out.println(e);</span>
+<span class="nc" id="L107">      responseMap.put(&quot;type&quot;, &quot;error&quot;);</span>
+<span class="nc" id="L108">      responseMap.put(&quot;error_type&quot;, e);</span>
+<span class="nc" id="L109">      return adapter.toJson(responseMap);</span>
     }
   }
 }
