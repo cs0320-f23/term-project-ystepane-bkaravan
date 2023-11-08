@@ -16,8 +16,8 @@ interface LatLong {
 }
 
 function MapBox() {
-  const ProvidenceLatLong: LatLong = { lat: 50.824, long: 30.4128 };
-  const initialZoom = 0.5;
+  const ProvidenceLatLong: LatLong = { lat: 40.69, long: -73.82 };
+  const initialZoom = 10;
   const [overlay, setOverlay] = useState<GeoJSON.FeatureCollection | undefined>(
     undefined
   );
@@ -40,24 +40,27 @@ function MapBox() {
 
   return (
     <div className="mapbox">
-        <Map
-          mapboxAccessToken={ACCESS_TOKEN}
-          longitude={viewState.longitude}
-          latitude={viewState.latitude}
-          zoom={viewState.zoom}
-          onMove={(ev: ViewStateChangeEvent) => setViewState(ev.viewState)}
-          mapStyle={"mapbox://styles/mapbox/light-v11"}
-          style={{ width: 500, height: 400 }}
-          onClick={(ev: MapLayerMouseEvent) => onMapClick(ev)}
-        >
-          <Source id="geo_data" type="geojson" data={overlay}>
-            <Layer
-              id={geoLayer.id}
-              type={geoLayer.type}
-              paint={geoLayer.paint}
-            />
-          </Source>
-        </Map>
+      <Map
+        mapboxAccessToken={ACCESS_TOKEN}
+        longitude={viewState.longitude}
+        latitude={viewState.latitude}
+        zoom={viewState.zoom}
+        onMove={(ev: ViewStateChangeEvent) => setViewState(ev.viewState)}
+        mapStyle={"mapbox://styles/mapbox/light-v11"}
+        style={{
+          position: "relative",
+          top: "1px",
+          left: "500px",
+          width: "600px",
+          height: "600px",
+          zIndex: 1,
+        }}
+        onClick={(ev: MapLayerMouseEvent) => onMapClick(ev)}
+      >
+        <Source id="geo_data" type="geojson" data={overlay}>
+          <Layer id={geoLayer.id} type={geoLayer.type} paint={geoLayer.paint} />
+        </Source>
+      </Map>
     </div>
   );
 }
