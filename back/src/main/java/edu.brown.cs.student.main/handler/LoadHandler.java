@@ -86,9 +86,9 @@ public class LoadHandler implements Route {
   /**
    * This record is responsible for producing the failure response.
    *
-   * @param filepath -- the filepath provided in the input.
+   * @param errorCode -- the filepath provided in the input.
    */
-  public record FailureResponse(String filepath) {
+  public record FailureResponse(String errorCode) {
 
     String serialize() {
       Moshi moshi = new Moshi.Builder().build();
