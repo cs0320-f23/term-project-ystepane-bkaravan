@@ -3,6 +3,9 @@ package edu.brown.cs.student.main;
 import static spark.Spark.after;
 import static spark.Spark.put;
 
+import edu.brown.cs.student.main.handler.FilterHandler;
+import edu.brown.cs.student.main.handler.GeoHandler;
+import edu.brown.cs.student.main.handler.JsonHandler;
 import edu.brown.cs.student.main.handler.LoadCensusHandler;
 import edu.brown.cs.student.main.handler.LoadHandler;
 import edu.brown.cs.student.main.handler.ReloadHandler;
@@ -12,6 +15,7 @@ import edu.brown.cs.student.main.parser.FactoryFailureException;
 import edu.brown.cs.student.main.server.Storage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import spark.Spark;
 
 /**
@@ -21,12 +25,25 @@ public class Main {
 
   private ArrayList<String> endpoints;
 
+  public static class GeoResponse {
+    public String type;
+    public Map<String, Object> geometry;
+    public Map<String, String> properties;
+  }
+
+//  public record FeatureCollection(String type, Features[] features){}
+//  public record Features(Geometry geometry, Properties properties, String type){}
+//  public record Geometry(String type){}
+//  public record Properties(AreaDescriptionData area_description_data, String city,
+//                           String holc_grade, String name){}
+//  public record AreaDescriptionData(Map<String, String> data){}
 
   /**
    * The initial method called when execution begins.
    *
    * @param args An array of command line arguments
    */
+
 
 
   public static void main(String[] args) throws IOException, FactoryFailureException {
@@ -39,12 +56,17 @@ public class Main {
     });
 
     Storage csvStorage = new Storage();
+    //GeoResponse response = new GeoResponse();
+    //FeatureCollection response = new FeatureCollection(null, null);
     // Setting up the edu.brown.cs.student.main.handler for the GET /order and /mock endpoints
     Spark.get("loadcsv", new LoadHandler(csvStorage));
     Spark.get("viewcsv", new ViewHandler(csvStorage));
     Spark.get("searchcsv", new SearchHandler(csvStorage));
     Spark.get("broadband", new LoadCensusHandler(csvStorage));
     Spark.get("reload", new ReloadHandler(csvStorage));
+    Spark.get("geo", new GeoHandler());
+    //Spark.get("json", new JsonHandler(response));
+    //Spark.get("filter", new FilterHandler(response));
 
     Spark.init();
     Spark.awaitInitialization();
