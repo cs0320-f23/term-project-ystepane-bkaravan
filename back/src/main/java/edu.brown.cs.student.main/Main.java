@@ -3,6 +3,7 @@ package edu.brown.cs.student.main;
 import static spark.Spark.after;
 import static spark.Spark.put;
 
+import edu.brown.cs.student.main.handler.GeoHandler;
 import edu.brown.cs.student.main.handler.LoadCensusHandler;
 import edu.brown.cs.student.main.handler.LoadHandler;
 import edu.brown.cs.student.main.handler.ReloadHandler;
@@ -45,6 +46,7 @@ public class Main {
     Spark.get("searchcsv", new SearchHandler(csvStorage));
     Spark.get("broadband", new LoadCensusHandler(csvStorage));
     Spark.get("reload", new ReloadHandler(csvStorage));
+    Spark.get("geo", new GeoHandler());
 
     Spark.init();
     Spark.awaitInitialization();
