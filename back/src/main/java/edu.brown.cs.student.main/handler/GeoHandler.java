@@ -127,3 +127,4 @@ public class GeoHandler implements Route {
   public record AreaDescriptionData(Map<String, String> data){}
 
 }
+
