@@ -15,6 +15,8 @@ export default function REPL() {
     <div className="repl" aria-label="High component">
       <MapBox />
       <hr></hr>
+      <REPLHistory
+      commands = {history}/>
       <REPLInput
         commands={history}
         file={file}

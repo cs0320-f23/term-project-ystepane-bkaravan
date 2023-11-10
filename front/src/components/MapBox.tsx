@@ -58,6 +58,7 @@ function MapBox() {
         onClick={(ev: MapLayerMouseEvent) => onMapClick(ev)}
       >
         <Source id="geo_data" type="geojson" data={overlay}>
+          {console.log(overlay)}
           <Layer id={geoLayer.id} type={geoLayer.type} paint={geoLayer.paint} />
         </Source>
       </Map>
