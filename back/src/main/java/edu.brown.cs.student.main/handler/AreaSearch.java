@@ -72,7 +72,8 @@ public class AreaSearch implements Route {
 //    JsonAdapter<CensusData> censusDataAdapter = moshi.adapter(CensusData.class);
       Map<String, Object> responseMap = new LinkedHashMap<>();
       responseMap.put("Message", "Keyword: \"" + keyword + "\" search has been conducted!");
-      return adapter.toJson(responseMap);
+      return jsonAdapter.toJson(returnData);
+      //return adapter.toJson(responseMap);
   // do something with return data
     } catch (Exception e) {
       e.printStackTrace();
