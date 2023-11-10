@@ -40,8 +40,6 @@ We store a Map with both keys and values being strings to represent the correspo
 
 We store CensusData and Geolocations as records. 
 
-We store CSV data as a List of String Lists and CSV headers as a List of Strings. 
-
 ## Runtime/Space Optimizations You Made
 
 For a user taking advantage of the Searching for Broadband Coverage in a Given U.S. State and County functionality, the first step is converting a user's STATE string into the State ID used by the Census API. Rather than repeating queries to the list of state names and state IDs each time a user requests a broadband value in a new state, we store this information for the life of the server. We store this as a HashMap from State Names to State IDs. 
@@ -51,12 +49,12 @@ No known bugs.
 
 # Tests
 
-// TODO WRITE TESTS
+We have numerous tests documenting the functionality of broadband and other components of past projects. For this project's functionality, we have random testing and unit testing for bound box and area search in the MapTest file. 
 
 # How To…
 ## Run the Tests You Wrote/Were Provided
 
-// TODO WRITE TESTS
+Navigate the map test file and run the JUnit tests. 
 
 ## Build and Run Your Program
 
@@ -78,17 +76,25 @@ http://localhost:2020/broadband?state=STATE&county=COUNTY
 
 Note that the COUNTY value must be the full name of a county. For example, to retrieve the broadband value for Kings County, California, STATE is California and COUNTY is Kings County, California, as displayed below:
 
-http://localhost:2020/broadband?state=California&county=Kings%20County,%20California
+http://localhost:2020/broadband?state=California&county=Kings
 
-Louisiana refers to its county-equivalents as Parishes, so, for example:
-
-http://localhost:2020/broadband?state=Louisiana&county=Jefferson%20Parish,%20Louisiana
-
-Depending on the choice of browser, each space may need to be replaced with %20.
+Depending on the choice of browser, each space may need to be replaced with %20. Additionally, "Rhode Island" can also be queries by just typing "rhode" and other two name states. 
 
 ### Bound box query 
 
-The user is able to filter the geoJSON by providing the filepath to the JSON, the min lat and long, and the "step" parameter. The lat and longs are used to create the minimum values for the box, and the step value To query the bound box on the backend, 
+The user is able to filter the geoJSON by providing the filepath to the JSON, the min lat and long, and the "step" parameter. The lat and longs are used to create the minimum values for the box, and the step value. To query the bound box on the backend, the following query: 
+
+http://localhost:2020/boundbox?minlat=35&minlon=35&step=10 
+
+would create a box from 35-45 for both latitude and longitude. When step = 0, the entire dataset is returned. 
+
+### Area search query
+
+The user is able to search a key word from an area description from a given file path. The query paramters are the filepath and the keyword. The following query can be made: 
+
+http://localhost:2020/areasearch?filepath=sample/file/path&keyword=schools
+
+This returns the feature collection with edited holc-grades to "H", which is used in the front end to highlight an appropriate color. 
 
 # API Key
 d9ab70f1962723dec8d9c8a8ffde26a35fe97524
@@ -97,9 +103,7 @@ d9ab70f1962723dec8d9c8a8ffde26a35fe97524
 
 # Design Choices
 
-We chose to have three main classes create the front end of the projcet: input, history, and submit. History is in charge of updating the history of the queries, while input is responsible for handling the input and adding to the history. This is done using a shared state in the REPL class. Submit is a typescript function that handles the query and sends the query to the backend.
-
-mockedJson is responsible for mocking the data and returning it to submit. This is done by creating three different hashmaps, and changing which hashmap is currently being used depending on which (mocked) file is loaded. 
+The front end contains numerous implementation from past projects that remain such as CSV functionality. The new additions to the project are the map box class and the overlays.ts file. The map box class is responsible for setting up the map, identical to the gear up code besides one small difference to the overlays. The mapbox class takes in a state which dictates what file gets read by the overlay data. This is used to switch between files for our stakeholder and also to submit queries which highlight the map. The overlays.ts file deals with the query to the backend which gets the area search with "H" as the holc_grade and highlights the map
 
 ## Relationships Between Classes/Interfaces
 
@@ -107,21 +111,17 @@ The general structure for some classes was explained above, but we explain here 
 
 App - Responsible for creating the "Mock" header and instantiating the REPL class below.
 
-REPL - Manages shared states between input and history, while also formatting error messaging and mode notification.
+REPL - Manages shared states between input, history, and MapBox, while also formatting error messaging and mode notification.
 
 REPL History - Responsible for formatting the history array into html. Done by parsing an array of either strings of string double arrays into strings or tables, respectively.
 
 REPL Input - Responsible for recieving user query, sending to the backend, and then recieving the response and sending to history.
 
-Controlled input - Used to update the query string so that upon pressing submit, the query is accurately recieved.
-
-Submit - function which connects the front end to the backend. Handles the query by connecting to the response of the backend and sends the handles the promise to the input class. 
-
-MockedJson - Mocks load, view, and search using double string arrays and distinct hashmaps representing distinct files.
+REPL Function - Responsible for the logic of the REPL functions, including the area search
 
 ## Data Structures
 
-We store the maps of possible view and search queries associated with the different mocked files in the mocked json class.
+We use a map to house our REPL functions in the class. 
 
 We use various states in REPL, REPL History, and REPL input to keep the communication between these classes linked with React.
 
@@ -135,27 +135,30 @@ No known bugs.
 
 # Tests
 
-Our testing suite utilizes both unit testing and integration testing using playwright to test our mock. We wrote intergration tests to ensure that the correct elements were displayed on the UI webpage at the correct times. We did this by testing a series of commands, like loading, switching mode, viewing, searching, switching mode again, etc. We had multiple tests similar to this, each testing a different series of commands. We also tested to make sure that correct error messages were displayed on the screen when incorrect or invalid commands were entered. Ultimately, these tests also tested the state and dependency injection functionality of our program just by virtue of how the tests were setup. Finally, unit testing was implemented within the integrations tests, as individual functions were called within the integration tests. WE tested the integration of the backend with both real calls to the API and mock calls using a switch button. 
+Appropriate Playwright tests for the behavior of the front end web app were written.
+
+Different shapes of command and result were tested. From different reachable states, tests were performed.
 
 # How To…
 ## Run the Tests You Wrote/Were Provided
 
-Running the tests first involve installing playwright. This can be done through running the "npm init playwright@latest" in terminal. Once playwright is installed, there are two ways to run the tests. (1) Run "npx playwright test" in the terminal. This will run the tests in the terminal. (2) Run "npx playwright test --ui" in the terminal. This will open a new application that simiulates the application running with a ui. The latter method is what was primarily used to test this program, so that is our personal recommendaation when running the tests.
+To run the tests, we used the GearUp guide and worked with Playwright. To build and run a test, input npx playwright test which runs tests headless (does not open the browser) in the background. You can also use npx playwright show-report which gives more detailed information on test progression.
+
+npx playwright test --ui opens a UI to explore what the web app looks like as the test is occurring. There, a user can navigate between App.spec.ts and mockTests.spec.ts, where the two main testing suits are located.
 
 ## Build and Run Your Program
 
 Our program supports the following functionalities:
 
-Loading local CSV files
-Viewing local CSV files
-Searching local CSV files
-Querying broadband data from the API
-Switching between brief and verbose modes
-NOTE: To support Viewing or Searching local CSV files, a file must first be loaded.
+1. All previous project functionality
+2. The map
+3. Searching an area based on a keyword
 
 To run any of the functionalities, start the program using "npm start" in the terminal and navigate to the local server, while also starting the backend server in Intellij. 
 
-### Loading Local CSV Files
+### RUN ALL PREVIOUS FUNCTIONALITY
+
+This does not need to be read for the purposes of the map, but still documented as funcitonality. 
 
 Loading a CSV places its contents, and headers if applicable, in memory. Loading a CSV enables the CSV to be viewed or searched.
 
@@ -172,8 +175,6 @@ load_file data/census/postsecondary_education.csv true
 Viewing a CSV displays a previously loaded CSV's data contents and headers, if the loaded CSV has headers. The query format for viewing a CSV is:
 
 view
-
-### Searching Local CSV Files
 
 There are three ways to search a loaded CSV for a given keyword: 
 
@@ -213,11 +214,11 @@ EXAMPLE:
 http://localhost:3232/searchcsv?keyword=RI&col_name=race&search_type=2
 search RI 2 race
 
-### Searching for Broadband Coverage in a Given U.S. State and County
+# Searching for Broadband Coverage in a Given U.S. State and County
 
 This server also supports returning the percent of households in a given U.S. state and county that have access to broadband. The program queries the American Community Survey (ACS) 1-Year API for a given state and county, returning the value of the S2802_C03_022E variable, the "Estimate!!Percent Broadband Internet Subscription!!With a computer!!Total population in households!!EMPLOYMENT STATUS!!Civilian population 16 years and over!!Not in labor force" if that county is present in the ACS 1-Year Data. Counties with a population below 65,000 are suppressed for data privacy reasons, so the variable is not returned for them. 
 
-Note: Similar to search, you must replace spaces that do not distinguigh command arguments with underscores. In order to query a given STATE and COUNTY, the following backend commands with their respective front end queries are shown: 
+Note: Similar to search, you must replace spaces that do not distinguigh command arguments with %20. In order to query a given STATE and COUNTY, the following backend commands with their respective front end queries are shown: 
 
 http://localhost:3232/broadband?state=STATE&county=COUNTY
 broadband STATE COUNTY
@@ -225,14 +226,19 @@ broadband STATE COUNTY
 Note that the COUNTY value must be the full name of a county. For example, to retrieve the broadband value from the backend for Kings County, California, STATE is California and COUNTY is Kings County, California, as displayed below. For the front end query, this is not necessary as shown below:
 
 http://localhost:3232/broadband?state=California&county=Kings%20County,%20California
-broadband California Kings_County
+broadband California Kings%20County
 
-Louisiana refers to its county-equivalents as Parishes, so, for example:
+## Area Search
 
-http://localhost:3232/broadband?state=Louisiana&county=Jefferson%20Parish,%20Louisiana
-broadband Louisiana Jefferson_Parish
+To highlight areas on the map in purple based on a keyword in the area description:
 
-Depending on the choice of browser, each space may need to be replaced with %20.
+highlight filepath keyword
+
+A more direct example: 
+highlight data/GeoJSON/geodata.json schools
+
+will highlight much of the map purple because schools is a very common description 
+
 
 # API Key
 d9ab70f1962723dec8d9c8a8ffde26a35fe97524
