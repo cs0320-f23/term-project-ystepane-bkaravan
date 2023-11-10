@@ -239,6 +239,43 @@ const broadbandHandler: REPLFunction = (args: string[]) => {
   });
 };
 
+const areaSearchHandler: REPLFunction = (args: string[]) => {
+  if (args.length < 2) {
+    return Promise.resolve([
+      "Not enough args for area search, expected a filepath and a keyword",
+      [],
+    ]);
+  }
+  const url =
+  "http://localhost:2020/areasearch?filepath=" + args[0] + "&keyword=" + args[1];
+  return fetch(url).then((response: Response) => {
+    return response.json().then((json) => {
+      console.log("here")
+      console.log(json.Message)
+      const output: [string, string[][]] = [
+        json.Message,
+        [[]],
+      ];
+      return output;
+      // if (isBroadbandResponse(json)) {
+      //   const output: [string, string[][]] = [
+      //     json.result + " broadband",
+      //     [[json.address, "bb number: " + json.bbNumber, json.timestamp]],
+      //   ];
+      //   return output;
+      // } else {
+      //   const output: [string, string[][]] = [json.error_type, []]; // specify county or state
+      //   return output;
+      // }
+    }).catch(() =>
+    {return Promise.resolve([
+      "Not enough args for area search, expected a filepath and a county",
+      [],
+    ])} 
+    )
+  });
+}
+
 /**
  * This interface checks the properties of the load.
  */
@@ -285,6 +322,7 @@ REPLMap["search"] = searchHandler;
 REPLMap["view"] = viewHandler;
 REPLMap["broadband"] = broadbandHandler;
 REPLMap["reload"] = reloadHandler;
+REPLMap["highlight"] = areaSearchHandler;
 
 /**
  * This function handles the commands that are being passed in.
