@@ -51,6 +51,8 @@ export const geoLayer: FillLayer = {
       "#e9ed0e",
       "D",
       "#d11d1d",
+      "H",
+      "#f1f1f1",
       "#ccc",
     ],
     "fill-opacity": 0.2,
