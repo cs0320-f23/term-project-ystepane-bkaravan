@@ -122,7 +122,47 @@ int PAIRS = 500;
         pair.add((rand.nextFloat() * 300) - 150);
         testList.add(pair);
       }
+      // if we run this many times, it should not crash
       box.filterBounds(testList);
+    }
+  }
+
+  @Test
+  public void propertyTrueCrushTest() {
+    // set up the range of coords from -40 to 40
+    box.isCoordValid("-41", "-41", "82");
+    for (int i = 0; i < ITERATIONS; i++) {
+      List<List<Float>> testList = new ArrayList<>();
+      Random rand = new Random();
+      for (int j = 0; j < PAIRS; j++) {
+        ArrayList<Float> pair = new ArrayList<>();
+        // every pair should be in the above range
+        pair.add((rand.nextFloat() * 80) - 40);
+        pair.add((rand.nextFloat() * 80) - 40);
+        testList.add(pair);
+      }
+      //should return true every time
+      assertTrue(box.filterBounds(testList));
+    }
+  }
+
+  @Test
+  public void propertyFalseCrushTest() {
+    // only want negative coordinates
+    box.isCoordValid("-41", "-41", "20");
+    for (int i = 0; i < ITERATIONS; i++) {
+      List<List<Float>> testList = new ArrayList<>();
+      Random rand = new Random();
+      for (int j = 0; j < PAIRS; j++) {
+        ArrayList<Float> pair = new ArrayList<>();
+        // every pair has positive coordinates
+        pair.add((rand.nextFloat() * 80));
+        pair.add((rand.nextFloat() * 80));
+        testList.add(pair);
+//        System.out.println(pair);
+      }
+      // so everything should be false
+      assertFalse(box.filterBounds(testList));
     }
   }
 }
