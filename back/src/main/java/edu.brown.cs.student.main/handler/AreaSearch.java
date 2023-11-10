@@ -48,7 +48,7 @@ public class AreaSearch implements Route {
       FeatureCollection data = jsonAdapter.fromJson(json);
 
       AreaSearch.Features[] fillArray = new AreaSearch.Features[data.features.length];
-      //AreaSearch.FeatureCollection returnData = new AreaSearch.FeatureCollection(data.type, fillArray);
+      AreaSearch.FeatureCollection returnData = new AreaSearch.FeatureCollection(data.type, fillArray);
 
       int i = 0;
       for (Features feat : data.features) {
@@ -60,7 +60,8 @@ public class AreaSearch implements Route {
         Map<String, String> descriptions = currProps.area_description_data;
         for (String description : descriptions.values()) {
           if (description.contains(keyword)) {
-            feat.properties.changeHolcGrade("H");
+            Properties property = feat.properties.changeHolcGrade("H");
+            feat = new Features(feat.geometry, property, feat.type);
           }
         }
           fillArray[i] = feat;
@@ -72,7 +73,7 @@ public class AreaSearch implements Route {
       Map<String, Object> responseMap = new LinkedHashMap<>();
       responseMap.put("Message", "Keyword: \"" + keyword + "\" search has been conducted!");
       return adapter.toJson(responseMap);
-
+  // do something with return data
     } catch (Exception e) {
       e.printStackTrace();
       return null;
