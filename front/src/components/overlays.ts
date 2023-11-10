@@ -2,13 +2,35 @@ import { FeatureCollection } from "geojson";
 import { FillLayer } from "react-map-gl";
 
 // Import the raw JSON file
-import rl_data from "../geodata/fullDownload.json"; // this is what we need to fetch from our backend
+//import  from "../geodata/fullDownload.json"; // this is what we need to fetch from our backend
+
+const basic_data = 'http://localhost:2020/loaddata';
+
+async function fetchData() {
+  try {
+    const response = await fetch(basic_data).then(response => response.json());
+
+    // Use data as needed within the scope
+    console.log(response);
+
+    // Return the resolved data directly
+    return response;
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+    // Return an empty object or handle the error as needed
+    return {};
+  }
+}
 
 function isFeatureCollection(json: any): json is FeatureCollection {
+  // console.log(json);
+  // console.log(json.type);
+  console.log(json.type === "FeatureCollection")
   return json.type === "FeatureCollection";
 }
 
 export function overlayData(): GeoJSON.FeatureCollection | undefined {
+  const rl_data = fetchData();
   return isFeatureCollection(rl_data) ? rl_data : undefined;
 }
 
