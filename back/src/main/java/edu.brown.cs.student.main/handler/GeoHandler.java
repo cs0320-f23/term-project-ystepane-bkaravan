@@ -108,7 +108,7 @@ public class GeoHandler implements Route {
         return false;
       }
       this.maxLat = this.minLat + stepF;
-      this.maxLon = this.maxLon + stepF;
+      this.maxLon = this.minLon + stepF;
       return !(this.maxLat > 90.0) && !(this.maxLon > 180.0);
     } catch (NumberFormatException e) {
       return false;
