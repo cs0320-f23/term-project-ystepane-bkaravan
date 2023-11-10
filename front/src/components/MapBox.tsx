@@ -35,7 +35,11 @@ function MapBox() {
   }
 
   useEffect(() => {
-    setOverlay(overlayData());
+    async function doStuff() {
+      const data = await overlayData();
+      setOverlay(data);
+    }
+    doStuff();
   }, []);
 
   return (
@@ -58,7 +62,7 @@ function MapBox() {
         onClick={(ev: MapLayerMouseEvent) => onMapClick(ev)}
       >
         <Source id="geo_data" type="geojson" data={overlay}>
-          {console.log(overlay)}
+          {/* {console.log(overlay)} */}
           <Layer id={geoLayer.id} type={geoLayer.type} paint={geoLayer.paint} />
         </Source>
       </Map>

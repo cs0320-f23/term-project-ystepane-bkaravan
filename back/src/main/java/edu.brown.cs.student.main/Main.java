@@ -6,7 +6,7 @@ import edu.brown.cs.student.main.handler.AreaSearch;
 import edu.brown.cs.student.main.handler.BoundBox;
 
 import edu.brown.cs.student.main.handler.LoadCensusHandler;
-import edu.brown.cs.student.main.handler.LoadData;
+//import edu.brown.cs.student.main.handler.LoadData;
 import edu.brown.cs.student.main.handler.LoadHandler;
 import edu.brown.cs.student.main.handler.ReloadHandler;
 import edu.brown.cs.student.main.handler.SearchHandler;
@@ -66,7 +66,7 @@ public class Main {
     Spark.get("reload", new ReloadHandler(csvStorage));
     Spark.get("boundbox", new BoundBox());
     Spark.get("areasearch", new AreaSearch());
-    Spark.get("loaddata", new LoadData());
+    //Spark.get("loaddata", new LoadData());
 
 
     Spark.init();

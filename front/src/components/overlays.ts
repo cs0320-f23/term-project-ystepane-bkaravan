@@ -4,33 +4,30 @@ import { FillLayer } from "react-map-gl";
 // Import the raw JSON file
 //import  from "../geodata/fullDownload.json"; // this is what we need to fetch from our backend
 
-const basic_data = 'http://localhost:2020/loaddata';
+const basic_data =
+  "http://localhost:2020/boundbox?filepath=data/census/fullDownload.json&minlat=-40&minlon=-120&step=0";
 
 async function fetchData() {
-  try {
-    const response = await fetch(basic_data).then(response => response.json());
+  const response = await fetch(basic_data)
+    .then((response) => response.json())
+    .then((json) => (isFeatureCollection(json) ? json : undefined));
 
-    // Use data as needed within the scope
-    console.log(response);
+  // Use data as needed within the scope
+  console.log(response);
 
-    // Return the resolved data directly
-    return response;
-  } catch (error) {
-    console.error('There was a problem with the fetch operation:', error);
-    // Return an empty object or handle the error as needed
-    return {};
-  }
+  // Return the resolved data directly
+  return response;
 }
 
 function isFeatureCollection(json: any): json is FeatureCollection {
   // console.log(json);
   // console.log(json.type);
-  console.log(json.type === "FeatureCollection")
+  console.log(json.type === "FeatureCollection");
   return json.type === "FeatureCollection";
 }
 
-export function overlayData(): GeoJSON.FeatureCollection | undefined {
-  const rl_data = fetchData();
+export async function overlayData() {
+  const rl_data = await fetchData();
   return isFeatureCollection(rl_data) ? rl_data : undefined;
 }
 

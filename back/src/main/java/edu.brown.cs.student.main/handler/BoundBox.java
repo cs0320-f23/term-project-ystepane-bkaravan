@@ -20,6 +20,7 @@ public class BoundBox implements Route {
   private float minLon;
   private float maxLat;
   private float maxLon;
+  private float stepF;
 
   public BoundBox() {
 //    this.collection = collection;
@@ -49,6 +50,9 @@ public class BoundBox implements Route {
     try {
       Path filePath = Paths.get(file);
       String json = Files.readString(filePath);
+      if (this.stepF == 0.0) {
+        return json;
+      }
 
       FeatureCollection data = jsonAdapter.fromJson(json);
       assert(data != null);
@@ -99,8 +103,8 @@ public class BoundBox implements Route {
       if (this.minLat < -90.0 || this.minLon < -180.0) {
         return false;
       }
-      float stepF = Float.parseFloat(step);
-      if (stepF <= 0.0) {
+      this.stepF = Float.parseFloat(step);
+      if (stepF < 0.0) {
         return false;
       }
       this.maxLat = this.minLat + stepF;
