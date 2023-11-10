@@ -7,8 +7,11 @@ import { FillLayer } from "react-map-gl";
 const basic_data =
   "http://localhost:2020/boundbox?filepath=data/census/fullDownload.json&minlat=-40&minlon=-120&step=0";
 
+const new_grade =
+  "http://localhost:2020/areasearch?filepath=data/census/fullDownload.json&keyword=industrial";
+
 async function fetchData() {
-  const response = await fetch(basic_data)
+  const response = await fetch(new_grade)
     .then((response) => response.json())
     .then((json) => (isFeatureCollection(json) ? json : undefined));
 
