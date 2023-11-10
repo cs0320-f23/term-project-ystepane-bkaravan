@@ -20,6 +20,8 @@ import java.nio.file.Paths;
 
 public class AreaSearch implements Route {
 
+  private Map<String, FeatureCollection> searchHistory;
+
   public AreaSearch() {
 //    this.collection = collection;
   }
@@ -41,6 +43,9 @@ public class AreaSearch implements Route {
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<FeatureCollection> jsonAdapter = moshi.adapter(FeatureCollection.class);
 
+    if (this.searchHistory.containsKey(keyword)){
+      return jsonAdapter.toJson(this.searchHistory.get(keyword));
+    }
     try {
       Path filePath = Paths.get(file);
       String json = Files.readString(filePath);
@@ -72,6 +77,7 @@ public class AreaSearch implements Route {
 ////    JsonAdapter<CensusData> censusDataAdapter = moshi.adapter(CensusData.class);
 //      Map<String, Object> responseMap = new LinkedHashMap<>();
 //      responseMap.put("Message", "Keyword: \"" + keyword + "\" search has been conducted!");
+      this.searchHistory.put(keyword, returnData);
       return jsonAdapter.toJson(returnData);
       //return adapter.toJson(responseMap);
   // do something with return data
