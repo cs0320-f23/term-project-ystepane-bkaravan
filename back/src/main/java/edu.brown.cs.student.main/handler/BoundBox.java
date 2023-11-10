@@ -2,7 +2,9 @@ package edu.brown.cs.student.main.handler;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import com.squareup.moshi.Types;
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import spark.Request;
@@ -12,14 +14,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class GeoHandler implements Route {
+public class BoundBox implements Route {
   //private FeatureCollection collection;
   private float minLat;
   private float minLon;
   private float maxLat;
   private float maxLon;
 
-  public GeoHandler() {
+  public BoundBox() {
 //    this.collection = collection;
   }
 
@@ -74,20 +76,12 @@ public class GeoHandler implements Route {
         }
       }
 
-
-      System.out.println(data);
-      System.out.println(data.features[0]);
-      System.out.println(data.features[0].geometry);
-      System.out.println(data.features[0].properties.area_description_data.data);
-      System.out.println(data.features[0].properties.area_description_data);
-      System.out.println(data.features[0].properties.area_description_data.data);
-
 //      return this.collection.features[0].properties.area_description_data.data;
       return jsonAdapter.toJson(returnData);
     } catch (Exception e) {
+      return null;
       //e.printStackTrace();
     }
-    return null;
   }
 
   private boolean isFileValid(String fileName) {
