@@ -67,11 +67,11 @@ public class AreaSearch implements Route {
           fillArray[i] = feat;
           i++;
       }
-      Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
-      JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
-//    JsonAdapter<CensusData> censusDataAdapter = moshi.adapter(CensusData.class);
-      Map<String, Object> responseMap = new LinkedHashMap<>();
-      responseMap.put("Message", "Keyword: \"" + keyword + "\" search has been conducted!");
+//      Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
+//      JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
+////    JsonAdapter<CensusData> censusDataAdapter = moshi.adapter(CensusData.class);
+//      Map<String, Object> responseMap = new LinkedHashMap<>();
+//      responseMap.put("Message", "Keyword: \"" + keyword + "\" search has been conducted!");
       return jsonAdapter.toJson(returnData);
       //return adapter.toJson(responseMap);
   // do something with return data

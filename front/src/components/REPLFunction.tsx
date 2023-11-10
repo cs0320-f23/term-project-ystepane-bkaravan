@@ -1,3 +1,5 @@
+import { fetchData } from "./overlays";
+
 /**
  * This interface sets up the format of the REPLFunction's output.
  */
@@ -250,11 +252,10 @@ const areaSearchHandler: REPLFunction = (args: string[]) => {
   "http://localhost:2020/areasearch?filepath=" + args[0] + "&keyword=" + args[1];
   return fetch(url).then((response: Response) => {
     return response.json().then((json) => {
-      console.log("here")
-      console.log(json.Message)
+      //fetchData(url);
       const output: [string, string[][]] = [
-        json.Message,
-        [[]],
+        "change",
+        [[url]],
       ];
       return output;
       // if (isBroadbandResponse(json)) {

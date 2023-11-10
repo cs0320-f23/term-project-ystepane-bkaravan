@@ -9,19 +9,24 @@ import  MapBox from "./MapBox"
 
 export default function REPL() {
   const [history, setHistory] = useState<string[][][]>([[[]]]); // history that records everything as a table
-  const [file, setFile] = useState<string[][]>([[]]);
+  const [REPLfile, REPLsetFile] = useState<string[][]>([[]]);
+  const [file, setFile] = useState<string>("http://localhost:2020/boundbox?filepath=data/census/fullDownload.json&minlat=-40&minlon=-120&step=0");
 
   return (
     <div className="repl" aria-label="High component">
-      <MapBox />
+      <MapBox 
+      file={file}
+      setFile={setFile}
+      />
       <hr></hr>
       <REPLHistory
       commands = {history}/>
       <REPLInput
         commands={history}
-        file={file}
-        setFile={setFile}
+        file={REPLfile}
+        setFile={REPLsetFile}
         setHistory={setHistory}
+        setOverlay={setFile}
       />
     </div>
   );

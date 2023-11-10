@@ -5,17 +5,23 @@ import Map, {
   ViewStateChangeEvent,
 } from "react-map-gl";
 import { geoLayer, overlayData } from "./overlays";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,Dispatch,
+  SetStateAction, } from "react";
 // You need to make this private file api.ts yourself!
 import { ACCESS_TOKEN } from "../private/api";
 import "../styles/main.css";
+
+export interface MapBoxProps{
+  file: string;
+  setFile: Dispatch<SetStateAction<string>>;
+}
 
 interface LatLong {
   lat: number;
   long: number;
 }
 
-function MapBox() {
+function MapBox(props: MapBoxProps) {
   const ProvidenceLatLong: LatLong = { lat: 40.69, long: -73.82 };
   const initialZoom = 10;
   const [overlay, setOverlay] = useState<GeoJSON.FeatureCollection | undefined>(
@@ -36,11 +42,11 @@ function MapBox() {
 
   useEffect(() => {
     async function doStuff() {
-      const data = await overlayData();
+      const data = await overlayData(props.file);
       setOverlay(data);
     }
     doStuff();
-  }, []);
+  }, [props.file]);
 
   return (
     <div className="mapbox">
