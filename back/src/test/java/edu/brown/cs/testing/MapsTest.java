@@ -1,0 +1,128 @@
+package edu.brown.cs.testing;
+
+
+import com.beust.ah.A;
+import edu.brown.cs.student.main.handler.BoundBox;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import spark.Spark;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.testng.AssertJUnit.assertFalse;
+
+public class MapsTest {
+  BoundBox box = new BoundBox();
+
+
+  // UNIT TESTING //
+  @Test
+  public void validFile(){
+    String file ="C:\\Users\\karav\\OneDrive\\Documents\\CS32\\maps-bkaravan-ibrauns\\back\\data\\csvtest\\duplicate.csv";
+    assertTrue(box.isFileValid(file));
+  }
+
+  @Test
+  public void validFileRel(){
+    String file ="data/stars/ten-star.csv";
+    assertTrue(box.isFileValid(file));
+  }
+
+  @Test
+  public void invalidFile(){
+    String file ="data/stars/nofile.csv";
+    assertFalse(box.isFileValid(file));
+  }
+  @Test
+  public void validCoord(){
+    String lat = "10";
+    String lon = "50";
+    String step = "3";
+    assertTrue(box.isCoordValid(lat,lon,step));
+
+  }
+
+  @Test
+  public void invalidCoord(){
+    String lat = "-100";
+    String lon = "500";
+    String step = "3";
+    assertFalse(box.isCoordValid(lat,lon,step));
+
+    String lat1 = "-100";
+    String lon1 = "0";
+    String step1 = "3";
+    assertFalse(box.isCoordValid(lat1,lon1,step1));
+
+    String lat2 = "0";
+    String lon2 = "181";
+    String step2 = "3";
+    assertFalse(box.isCoordValid(lat2,lon2,step2));
+
+    String lat3 = "0";
+    String lon3 = "170";
+    String step3 = "-1";
+    assertFalse(box.isCoordValid(lat3,lon3,step3));
+
+    String lat4 = "0";
+    String lon4 = "170";
+    String step4 = "20";
+    assertFalse(box.isCoordValid(lat4,lon4,step4));
+  }
+
+  @Test
+  public void isInBounds(){
+    box.isCoordValid("10.0", "50.0", "3.0");
+    float x = Float.parseFloat("11.0");
+    float y = Float.parseFloat("52.0");
+    assertTrue(box.isInBounds(x,y));
+
+    box.isCoordValid("-20.0", "130.0", "14.2");
+    float x1 = Float.parseFloat("-11.4");
+    float y1 = Float.parseFloat("137.8");
+    assertTrue(box.isInBounds(x1,y1));
+  }
+
+  @Test
+  public void isNotInBounds(){
+    box.isCoordValid("10.0", "50.0", "3.0");
+    float x = Float.parseFloat("16.0");
+    float y = Float.parseFloat("52.0");
+    assertFalse(box.isInBounds(x,y));
+
+    box.isCoordValid("10.0", "50.0", "3.0");
+    float x1 = Float.parseFloat("11.0");
+    float y1 = Float.parseFloat("70.0");
+    assertFalse(box.isInBounds(x1,y1));
+
+    box.isCoordValid("10.0", "50.0", "3.0");
+    float x2 = Float.parseFloat("16.0");
+    float y2 = Float.parseFloat("42.0");
+    assertFalse(box.isInBounds(x2,y2));
+  }
+
+  // Random Testing //
+int ITERATIONS = 1000;
+int PAIRS = 500;
+
+  @Test
+  public void crushTest() {
+    for (int i = 0; i < ITERATIONS; i++) {
+      List<List<Float>> testList = new ArrayList<>();
+      Random rand = new Random();
+      for (int j = 0; j < PAIRS; j++) {
+        ArrayList<Float> pair = new ArrayList<>();
+        pair.add((rand.nextFloat() * 300) - 150);
+        pair.add((rand.nextFloat() * 300) - 150);
+        testList.add(pair);
+      }
+      box.filterBounds(testList);
+    }
+  }
+}

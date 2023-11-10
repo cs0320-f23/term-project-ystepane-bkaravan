@@ -51,26 +51,19 @@ public class BoundBox implements Route {
       String json = Files.readString(filePath);
 
       FeatureCollection data = jsonAdapter.fromJson(json);
-//      assert(data != null);
+      assert(data != null);
       Features[] fillArray = new Features[data.features.length];
       FeatureCollection returnData = new FeatureCollection(data.type, fillArray);
       int i = 0;
 
       for (Features feat : data.features) {
-        System.out.println(feat);
-        if (feat.geometry == null) {
+//        System.out.println(feat);
+        if (feat == null || feat.geometry == null) {
           continue;
         }
         Geometry currGeometry = feat.geometry;
         List<List<Float>> coords = currGeometry.coordinates.get(0).get(0);
-        boolean pass = true;
-        for (List<Float> coordPair : coords) {
-          if (!isInBounds(coordPair.get(1), coordPair.get(0))) {
-            pass = false;
-            break;
-          }
-        }
-        if (pass) {
+        if (filterBounds(coords)) {
           fillArray[i] = feat;
           i++;
         }
@@ -84,13 +77,22 @@ public class BoundBox implements Route {
     }
   }
 
-  private boolean isFileValid(String fileName) {
+  public boolean isFileValid(String fileName) {
     // Check if the file exists and is a valid file (not a directory)
     File file = new File(fileName);
     return file.exists() && file.isFile();
   }
 
-  private boolean isCoordValid(String lat, String lon, String step) {
+  public boolean filterBounds(List<List<Float>> coords) {
+    for (List<Float> coordPair : coords) {
+      if (!isInBounds(coordPair.get(1), coordPair.get(0))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public boolean isCoordValid(String lat, String lon, String step) {
     try {
       this.minLat = Float.parseFloat(lat);
       this.minLon = Float.parseFloat(lon);
@@ -109,7 +111,7 @@ public class BoundBox implements Route {
     }
   }
 
-  private boolean isInBounds(float x, float y) {
+  public boolean isInBounds(float x, float y) {
     return (this.minLat < x) && (this.maxLat > x) && (this.minLon < y) && (this.maxLon > y);
   }
 
