@@ -1,15 +1,10 @@
 package edu.brown.cs.student.main;
 
 import static spark.Spark.after;
-import static spark.Spark.put;
 
-<<<<<<< HEAD
-import edu.brown.cs.student.main.handler.FilterHandler;
-import edu.brown.cs.student.main.handler.GeoHandler;
-import edu.brown.cs.student.main.handler.JsonHandler;
-=======
-import edu.brown.cs.student.main.handler.GeoHandler;
->>>>>>> 2d8af31a24f02c75e9fe1b17b8fbbdc6ec353702
+import edu.brown.cs.student.main.handler.AreaSearch;
+import edu.brown.cs.student.main.handler.BoundBox;
+
 import edu.brown.cs.student.main.handler.LoadCensusHandler;
 import edu.brown.cs.student.main.handler.LoadHandler;
 import edu.brown.cs.student.main.handler.ReloadHandler;
@@ -68,12 +63,8 @@ public class Main {
     Spark.get("searchcsv", new SearchHandler(csvStorage));
     Spark.get("broadband", new LoadCensusHandler(csvStorage));
     Spark.get("reload", new ReloadHandler(csvStorage));
-    Spark.get("geo", new GeoHandler());
-<<<<<<< HEAD
-    //Spark.get("json", new JsonHandler(response));
-    //Spark.get("filter", new FilterHandler(response));
-=======
->>>>>>> 2d8af31a24f02c75e9fe1b17b8fbbdc6ec353702
+    Spark.get("boundbox", new BoundBox());
+    Spark.get("areasearch", new AreaSearch());
 
     Spark.init();
     Spark.awaitInitialization();
