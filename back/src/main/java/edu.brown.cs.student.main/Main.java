@@ -26,9 +26,6 @@ public class Main {
   private ArrayList<String> endpoints;
 
   public static class GeoResponse {
-    public String type;
-    public Map<String, Object> geometry;
-    public Map<String, String> properties;
   }
 
 //  public record FeatureCollection(String type, Features[] features){}

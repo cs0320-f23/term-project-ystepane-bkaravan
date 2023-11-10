@@ -20,6 +20,7 @@ export interface REPLInputProps {
   file: string[][];
   setFile: Dispatch<SetStateAction<string[][]>>;
   setHistory: Dispatch<SetStateAction<string[][][]>>;
+  setOverlay: Dispatch<SetStateAction<string>>;
 }
 
 /*
@@ -78,6 +79,9 @@ export function REPLInput(props: REPLInputProps) {
             splitInput.slice(1)
           );
           output += response[0];
+          if (response[0] === "change") {
+            props.setOverlay(response[1][0][0])
+          }
           result = response[1]; // make this work with setFile? Will allow mocking?
         }
       } else {

@@ -1,36 +1,27 @@
 import { FeatureCollection } from "geojson";
 import { FillLayer } from "react-map-gl";
 
-// Import the raw JSON file
-//import  from "../geodata/fullDownload.json"; // this is what we need to fetch from our backend
-
 const basic_data =
   "http://localhost:2020/boundbox?filepath=data/census/fullDownload.json&minlat=-40&minlon=-120&step=0";
 
-const new_grade =
-  "http://localhost:2020/areasearch?filepath=data/census/fullDownload.json&keyword=industrial";
-
-async function fetchData() {
-  const response = await fetch(new_grade)
+export async function fetchData(endpoint: string) {
+  const response = await fetch(endpoint)
     .then((response) => response.json())
     .then((json) => (isFeatureCollection(json) ? json : undefined));
 
   // Use data as needed within the scope
-  console.log(response);
-
   // Return the resolved data directly
+  //setData(response);
   return response;
 }
 
 function isFeatureCollection(json: any): json is FeatureCollection {
-  // console.log(json);
-  // console.log(json.type);
-  console.log(json.type === "FeatureCollection");
   return json.type === "FeatureCollection";
 }
 
-export async function overlayData() {
-  const rl_data = await fetchData();
+export async function overlayData(file: string) {
+  const rl_data = await fetchData(file);
+  console.log(file)
   return isFeatureCollection(rl_data) ? rl_data : undefined;
 }
 
@@ -52,7 +43,7 @@ export const geoLayer: FillLayer = {
       "D",
       "#d11d1d",
       "H",
-      "#f1f1f1",
+      "#800080",
       "#ccc",
     ],
     "fill-opacity": 0.2,
