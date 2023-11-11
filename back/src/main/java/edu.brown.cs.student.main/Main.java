@@ -28,13 +28,6 @@ public class Main {
   public static class GeoResponse {
   }
 
-//  public record FeatureCollection(String type, Features[] features){}
-//  public record Features(Geometry geometry, Properties properties, String type){}
-//  public record Geometry(String type){}
-//  public record Properties(AreaDescriptionData area_description_data, String city,
-//                           String holc_grade, String name){}
-//  public record AreaDescriptionData(Map<String, String> data){}
-
   /**
    * The initial method called when execution begins.
    *
@@ -52,10 +45,8 @@ public class Main {
       response.header("Access-Control-Allow-Methods", "*");
     });
 
+    // our handlers
     Storage csvStorage = new Storage();
-    //GeoResponse response = new GeoResponse();
-    //FeatureCollection response = new FeatureCollection(null, null);
-    // Setting up the edu.brown.cs.student.main.handler for the GET /order and /mock endpoints
     Spark.get("loadcsv", new LoadHandler(csvStorage));
     Spark.get("viewcsv", new ViewHandler(csvStorage));
     Spark.get("searchcsv", new SearchHandler(csvStorage));
@@ -63,7 +54,6 @@ public class Main {
     Spark.get("reload", new ReloadHandler(csvStorage));
     Spark.get("boundbox", new BoundBox());
     Spark.get("areasearch", new AreaSearch());
-    //Spark.get("loaddata", new LoadData());
 
 
     Spark.init();

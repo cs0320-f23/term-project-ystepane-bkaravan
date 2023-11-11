@@ -239,6 +239,41 @@ highlight data/GeoJSON/geodata.json schools
 
 will highlight much of the map purple because schools is a very common description 
 
+## Reflection
+
+Our finished Maps product is built using many systems: programming languages, development environments, software packages, hardware, etc. 
+Here is rough list of things we used while working on Maps: 
+
+• React: a JavaScript library for building user interfaces, developed by Facebook and a community of individual developers and companies.
+
+• TypeScript: a programming language that extends JavaScript by adding types, developed and maintained by Microsoft.
+
+• Mapbox: a platform for creating and displaying maps and location data, developed by Mapbox Inc.
+
+• Spark: a micro web framework for Java and Kotlin, developed by Per Wendel, David Åse, and contributors.
+
+• Playwright: a Node.js library for end-to-end testing of web applications, developed by Microsoft.
+
+• JUnit: a unit testing framework for Java, developed by Kent Beck, Erich Gamma, and contributors.
+
+• HTML: a markup language for creating web pages and web applications, developed and maintained by the World Wide Web Consortium (W3C) and the Web Hypertext Application Technology Working Group (WHATWG).
+
+• CSS: a style sheet language for describing the presentation of web pages, developed and maintained by the W3C.
+
+• GitHub: a platform for hosting and collaborating on software development projects, developed by GitHub Inc.
+
+• IntelliJ IDEA: an integrated development environment for Java and other languages, developed by JetBrains.
+
+• Chat GPT: a web-based text-generator that allowed us to use the chat-bot AI to debug and figure out specific syntax questions.
+
+• Stackoverflow: a website for developers to learn, share, and solve programming problems, powered by a community of experts and enthusiasts. We used it to resolve the most common issues and squigglies.
+
+## Sources / Credits
+
+- GearUp, Mock and Server code served as source codes for this project.
+- StackOverflow and ChatGPT generated code was used to figure out some frameworks and set up details.
+- shared code and ideas with ystepane
+
 
 # API Key
 d9ab70f1962723dec8d9c8a8ffde26a35fe97524

@@ -22,32 +22,48 @@ public class MapsTest {
 
 
   // UNIT TESTING //
+
+  /**
+   * test for valid file absolute path
+   */
   @Test
   public void validFile(){
     String file ="C:\\Users\\karav\\OneDrive\\Documents\\CS32\\maps-bkaravan-ibrauns\\back\\data\\csvtest\\duplicate.csv";
     assertTrue(box.isFileValid(file));
   }
 
+  /**
+   * test for good file
+   */
   @Test
   public void validFileRel(){
     String file ="data/stars/ten-star.csv";
     assertTrue(box.isFileValid(file));
   }
 
+  /**
+   * test for bad file
+   */
   @Test
   public void invalidFile(){
     String file ="data/stars/nofile.csv";
     assertFalse(box.isFileValid(file));
   }
+
+  /**
+   * Test for validCoordinates
+   */
   @Test
   public void validCoord(){
     String lat = "10";
     String lon = "50";
     String step = "3";
     assertTrue(box.isCoordValid(lat,lon,step));
-
   }
 
+  /**
+   * Test that every permutation of wrong coordinates is false
+   */
   @Test
   public void invalidCoord(){
     String lat = "-100";
@@ -76,6 +92,9 @@ public class MapsTest {
     assertFalse(box.isCoordValid(lat4,lon4,step4));
   }
 
+  /**
+   * Test for checking that things are properly in bounds
+   */
   @Test
   public void isInBounds(){
     box.isCoordValid("10.0", "50.0", "3.0");
@@ -88,6 +107,10 @@ public class MapsTest {
     float y1 = Float.parseFloat("137.8");
     assertTrue(box.isInBounds(x1,y1));
   }
+
+  /**
+   * Test for checking that every permutation of coordinates not in bounds stays false
+   */
 
   @Test
   public void isNotInBounds(){
@@ -111,6 +134,10 @@ public class MapsTest {
 int ITERATIONS = 1000;
 int PAIRS = 500;
 
+  /**
+   * FuzzTest to never crash
+   */
+
   @Test
   public void crushTest() {
     for (int i = 0; i < ITERATIONS; i++) {
@@ -126,6 +153,10 @@ int PAIRS = 500;
       box.filterBounds(testList);
     }
   }
+
+  /**
+   * Propertybased test that checks that everyting in the right range should return true
+   */
 
   @Test
   public void propertyTrueCrushTest() {
@@ -145,6 +176,11 @@ int PAIRS = 500;
       assertTrue(box.filterBounds(testList));
     }
   }
+
+  /**
+   * property based test to check that every coordinate in the wrong range should return False
+   *
+   */
 
   @Test
   public void propertyFalseCrushTest() {

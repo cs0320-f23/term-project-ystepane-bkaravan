@@ -11,6 +11,9 @@ import React, { useEffect, useState,Dispatch,
 import { ACCESS_TOKEN } from "../private/api";
 import "../styles/main.css";
 
+/**
+ * Props interface to share the state with REPLInput
+ */
 export interface MapBoxProps{
   file: string;
   setFile: Dispatch<SetStateAction<string>>;
@@ -21,6 +24,11 @@ interface LatLong {
   long: number;
 }
 
+/**
+ * Main function for the MapBox JSX element
+ * @param props 
+ * @returns 
+ */
 function MapBox(props: MapBoxProps) {
   const ProvidenceLatLong: LatLong = { lat: 40.69, long: -73.82 };
   const initialZoom = 10;
@@ -34,11 +42,19 @@ function MapBox(props: MapBoxProps) {
     zoom: initialZoom,
   });
 
+  /**
+   * function from the maps gear up 
+   * @param e 
+   */
   function onMapClick(e: MapLayerMouseEvent) {
     console.log(e);
     console.log(e.lngLat.lat);
     console.log(e.lngLat.lng);
   }
+
+  /**
+   * useEffect to rerender the overlay based on changes with our link
+   */
 
   useEffect(() => {
     async function doStuff() {

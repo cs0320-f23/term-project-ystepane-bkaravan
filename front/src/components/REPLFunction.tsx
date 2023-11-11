@@ -241,6 +241,12 @@ const broadbandHandler: REPLFunction = (args: string[]) => {
   });
 };
 
+/**
+ * helper function that supports the highlight command 
+ * @param args filepath and the search term
+ * @returns a promise with the response to load a new overlay
+ */
+
 const areaSearchHandler: REPLFunction = (args: string[]) => {
   if (args.length < 2) {
     return Promise.resolve([
@@ -252,22 +258,11 @@ const areaSearchHandler: REPLFunction = (args: string[]) => {
   "http://localhost:2020/areasearch?filepath=" + args[0] + "&keyword=" + args[1];
   return fetch(url).then((response: Response) => {
     return response.json().then((json) => {
-      //fetchData(url);
       const output: [string, string[][]] = [
         "change",
         [[url]],
       ];
       return output;
-      // if (isBroadbandResponse(json)) {
-      //   const output: [string, string[][]] = [
-      //     json.result + " broadband",
-      //     [[json.address, "bb number: " + json.bbNumber, json.timestamp]],
-      //   ];
-      //   return output;
-      // } else {
-      //   const output: [string, string[][]] = [json.error_type, []]; // specify county or state
-      //   return output;
-      // }
     }).catch(() =>
     {return Promise.resolve([
       "Not enough args for area search, expected a filepath and a county",
