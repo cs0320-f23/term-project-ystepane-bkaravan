@@ -80,17 +80,19 @@ export default function Places() {
 }
 
 function Map() {
-  const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
+  const center = useMemo(() => ({ lat: 41.825226, lng: -71.418884 }), []);
   const [selected, setSelected] = useState(null);
   const [selectedDest, setSelectedDest] = useState(null);
-  let destination = selectedDest;
-  let origin = selected;
-  let directions = undefined;
-
-  let directionsService = new google.maps.DirectionsService();
+  const [directions, setDirections] = useState(null); // Use useState for directions
+  const directionsService = useMemo(
+    () => new window.google.maps.DirectionsService(),
+    []
+  );
 
   useEffect(() => {
-    const changeDirection = (origin, destination) => {
+    const changeDirection = (origin: string, destination: string) => {
+      console.log(origin);
+      console.log(destination);
       directionsService.route(
         {
           origin: origin,
@@ -99,7 +101,7 @@ function Map() {
         },
         (result, status) => {
           if (status === google.maps.DirectionsStatus.OK) {
-            directions = result;
+            setDirections(result);
             console.log(directions);
           } else {
             console.error("error fetching directions" + result);
@@ -107,9 +109,13 @@ function Map() {
         }
       );
     };
-    changeDirection(origin, destination);
-  }, [origin, destination]);
-  
+    if (selected && selectedDest) {
+      changeDirection(selected, selectedDest);
+    }
+  }, [selected, selectedDest, directionsService]);
+
+  console.log("directions below");
+  console.log(directions);
   return (
     <>
       <div className="places-container">
@@ -135,7 +141,7 @@ function Map() {
   );
 }
 
-const PlacesAutocomplete = ({ setSelected }) => {
+const PlacesAutocomplete = ({setSelected}) => {
   const {
     ready,
     value,
@@ -144,7 +150,7 @@ const PlacesAutocomplete = ({ setSelected }) => {
     clearSuggestions,
   } = usePlacesAutocomplete();
 
-  const handleSelect = async (address) => {
+  const handleSelect = async (address : any) => {
     setValue(address, false);
     console.log(address);
     clearSuggestions();
