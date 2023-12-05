@@ -36,7 +36,7 @@ function App() {
   return (
     <div className="App">
       <p className="App-header">
-        <h1>Urban Studies Research</h1>
+        <h1>Travel Buddy!</h1>
       </p>
       <REPL />
     </div>
