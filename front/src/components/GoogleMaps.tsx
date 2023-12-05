@@ -49,8 +49,13 @@
 
 // export default GoogleMapFunc;
 
-import { useState, useMemo } from "react";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import { useState, useMemo, useEffect } from "react";
+import {
+  GoogleMap,
+  useLoadScript,
+  Marker,
+  DirectionsRenderer,
+} from "@react-google-maps/api";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
@@ -77,11 +82,42 @@ export default function Places() {
 function Map() {
   const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
   const [selected, setSelected] = useState(null);
+  const [selectedDest, setSelectedDest] = useState(null);
+  let destination = selectedDest;
+  let origin = selected;
+  let directions = undefined;
 
+  let directionsService = new google.maps.DirectionsService();
+
+  useEffect(() => {
+    const changeDirection = (origin, destination) => {
+      directionsService.route(
+        {
+          origin: origin,
+          destination: destination,
+          travelMode: google.maps.TravelMode.DRIVING,
+        },
+        (result, status) => {
+          if (status === google.maps.DirectionsStatus.OK) {
+            directions = result;
+            console.log(directions);
+          } else {
+            console.error("error fetching directions" + result);
+          }
+        }
+      );
+    };
+    changeDirection(origin, destination);
+  }, [origin, destination]);
+  
   return (
     <>
       <div className="places-container">
         <PlacesAutocomplete setSelected={setSelected} />
+      </div>
+
+      <div className="places-container-dest">
+        <PlacesAutocomplete setSelected={setSelectedDest} />
       </div>
 
       <GoogleMap
@@ -90,6 +126,10 @@ function Map() {
         mapContainerClassName="map-container"
       >
         {selected && <Marker position={selected} />}
+        {selectedDest && <Marker position={selectedDest} />}
+        {selected && selectedDest && (
+          <DirectionsRenderer directions={directions} />
+        )}
       </GoogleMap>
     </>
   );
@@ -106,6 +146,7 @@ const PlacesAutocomplete = ({ setSelected }) => {
 
   const handleSelect = async (address) => {
     setValue(address, false);
+    console.log(address);
     clearSuggestions();
 
     const results = await getGeocode({ address });

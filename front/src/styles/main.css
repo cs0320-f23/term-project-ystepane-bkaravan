@@ -48,6 +48,15 @@ button {
   width: 300px;
 }
 
+.places-container-dest {
+  position: absolute;
+  top: 10px;
+  left: 70%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 300px;
+}
+
 .map-container {
   width: 100%;
   height: 100vh;
