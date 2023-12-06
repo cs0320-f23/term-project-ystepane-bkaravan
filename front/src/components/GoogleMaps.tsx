@@ -68,10 +68,11 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
+import { ACCESS_TOKEN_2 } from "../private/api";
 
 export default function Places() {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyC9AgZLJoATBEYX9rkoFowN1896XuRLf9s",
+    googleMapsApiKey: ACCESS_TOKEN_2,
     libraries: ["places"],
   });
 
@@ -141,7 +142,7 @@ function Map() {
   );
 }
 
-const PlacesAutocomplete = ({setSelected}) => {
+const PlacesAutocomplete = ({ setSelected }) => {
   const {
     ready,
     value,
@@ -150,7 +151,7 @@ const PlacesAutocomplete = ({setSelected}) => {
     clearSuggestions,
   } = usePlacesAutocomplete();
 
-  const handleSelect = async (address : any) => {
+  const handleSelect = async (address: any) => {
     setValue(address, false);
     console.log(address);
     clearSuggestions();

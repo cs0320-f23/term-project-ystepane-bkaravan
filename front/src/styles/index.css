@@ -47,6 +47,22 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.time-submit {
+  position: absolute;
+  top: 222px;
+  left: 27%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 400px;
+  background-color: white;
+}
+
+.pickup {
+  color: black;
+  font-family: Roboto;
+  font-weight: 500;
+}
+
 .centered-table {
   margin: 0 auto; /* This centers the table horizontally */
   /* You can add more styles as needed */
