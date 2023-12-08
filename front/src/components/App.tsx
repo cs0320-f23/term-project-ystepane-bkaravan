@@ -1,6 +1,7 @@
 import "../styles/App.css";
 import { useEffect } from "react";
 import REPL from "./REPL";
+import Places from "./GoogleMaps";
 
 /**
  * This is the highest level component!
@@ -33,20 +34,9 @@ function App() {
     };
   }, []);
 
+
   return (
     <>
-      <div className="time-submit">
-        <label for="pickuptime" class="pickup">
-          Pickup (date and time):
-        </label>
-        <input
-          type="datetime-local"
-          id="pickuptime"
-          name="pickuptime"
-          required="required"
-        />
-        <input type="submit" value="Next" />
-      </div>
       <div className="App">
         <p className="App-header">
           <h1>Travel Buddy!</h1>

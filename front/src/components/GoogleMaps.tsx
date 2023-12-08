@@ -89,9 +89,8 @@ function Map() {
     () => new window.google.maps.DirectionsService(),
     []
   );
-
   useEffect(() => {
-    const changeDirection = (origin: string, destination: string) => {
+    const changeDirection = (origin, destination) => {
       console.log(origin);
       console.log(destination);
       directionsService.route(
@@ -103,7 +102,8 @@ function Map() {
         (result, status) => {
           if (status === google.maps.DirectionsStatus.OK) {
             setDirections(result);
-            console.log(directions);
+            console.log(origin);
+            console.log(destination);
           } else {
             console.error("error fetching directions" + result);
           }
@@ -115,16 +115,56 @@ function Map() {
     }
   }, [selected, selectedDest, directionsService]);
 
-  console.log("directions below");
+  function submitForm() {
+    //document.getElementById("origin-new").value = selected;
+    var form = document.getElementById("myForm");
+    var formData = new FormData(form);
+
+    fetch("http://localhost:2020/dateform", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        // Handle the response as needed
+        console.log("Form submitted successfully:", response);
+        // You can update the current page or perform other actions here
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+      });
+  }
+
   console.log(directions);
   return (
     <>
-      <div className="places-container">
-        <PlacesAutocomplete setSelected={setSelected} />
-      </div>
+      <form id="myForm">
+        <div className="time-submit">
+          <label htmlFor="pickuptime" className="pickup">
+            Pickup (date and time):
+          </label>
+          <input
+            type="datetime-local"
+            id="pickuptime"
+            name="pickuptime"
+            required
+          />
+          <input type="submit" value="Next" onClick={() => submitForm()} />
+          <input type="hidden" name="origin-new" id="origin-new" />
+          <input type="hidden" name="origin-lat" id="origin-lat" />
+          <input type="hidden" name="origin-lon" id="origin-lon" />
+          <input type="hidden" name="dest-new" id="dest-new"/>
+          <input type="hidden" name="dest-lat" id="dest-lat"/>
+          <input type="hidden" name="dest-lon" id="dest-lon"/>
+
+
+        </div>
+        <div className="places-container">
+          <PlacesAutocomplete setSelected={setSelected} isOrigin={true} />
+        </div>
+      </form>
 
       <div className="places-container-dest">
-        <PlacesAutocomplete setSelected={setSelectedDest} />
+        <PlacesAutocomplete setSelected={setSelectedDest} isOrigin={false}/>
       </div>
 
       <GoogleMap
@@ -142,7 +182,7 @@ function Map() {
   );
 }
 
-const PlacesAutocomplete = ({ setSelected }) => {
+const PlacesAutocomplete = ({ setSelected, isOrigin }) => {
   const {
     ready,
     value,
@@ -153,22 +193,36 @@ const PlacesAutocomplete = ({ setSelected }) => {
 
   const handleSelect = async (address: any) => {
     setValue(address, false);
+    if (isOrigin) {
+      document.getElementById("origin-new").value = address;
+    } else {
+      document.getElementById("dest-new").value = address;
+    }
     console.log(address);
     clearSuggestions();
 
     const results = await getGeocode({ address });
     const { lat, lng } = await getLatLng(results[0]);
+    if (isOrigin) {
+      document.getElementById("origin-lat").value = lat;
+      document.getElementById("origin-lon").value = lng;
+    } else {
+      document.getElementById("dest-lat").value = lat;
+      document.getElementById("dest-lon").value = lng;
+    }
     setSelected({ lat, lng });
   };
 
   return (
     <Combobox onSelect={handleSelect}>
       <ComboboxInput
+        type="travel"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         disabled={!ready}
         className="combobox-input"
         placeholder="Search an address"
+        required
       />
       <ComboboxPopover>
         <ComboboxList>

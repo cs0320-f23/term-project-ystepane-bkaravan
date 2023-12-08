@@ -10,6 +10,7 @@
 }
 
 .repl-history {
+  position: relative;
   height: 55vh;
   margin: auto;
   display: block;
@@ -41,28 +42,29 @@ button {
 
 .places-container {
   position: absolute;
-  top: 10px;
-  left: 50%;
+  top: 75px;
+  left: 8%;
   transform: translateX(-50%);
-  z-index: 10;
-  width: 300px;
+  z-index: 12;
+  width: 250px;
 }
 
 .places-container-dest {
   position: absolute;
-  top: 10px;
-  left: 70%;
+  top: 150px;
+  left: 8%;
   transform: translateX(-50%);
   z-index: 10;
-  width: 300px;
+  width: 250px;
 }
 
 .map-container {
-  width: 100%;
+  width: 50%;
   height: 100vh;
 }
 
 .combobox-input {
   width: 100%;
   padding: 0.5rem;
+  z-index: 11;
 }
