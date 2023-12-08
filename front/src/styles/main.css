@@ -10,15 +10,19 @@
 }
 
 .repl-history {
-  position: relative;
-  height: 55vh;
-  margin: auto;
-  display: block;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 70vh;
+  width: 50%;
   overflow: scroll;
 }
 
 .repl-input {
-  position: relative;
+  position: absolute;
+  top: 70vh;
+  left: 50%;
+  width: 50%;
   margin: auto;
   height: 10vh;
 }
@@ -59,8 +63,9 @@ button {
 }
 
 .map-container {
+  position: absolute;
   width: 50%;
-  height: 100vh;
+  height: 80vh;
 }
 
 .combobox-input {

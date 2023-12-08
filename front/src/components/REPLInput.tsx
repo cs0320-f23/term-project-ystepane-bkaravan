@@ -168,7 +168,7 @@ export function REPLInput(props: REPLInputProps) {
         onClick={() => handleSubmit(commandString)}
         //aria-label="input button"
       >
-        Submitted {count} times
+        Travel!
       </button>
     </div>
   );

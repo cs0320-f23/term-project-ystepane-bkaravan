@@ -148,7 +148,7 @@ function Map() {
             name="pickuptime"
             required
           />
-          <input type="submit" value="Next" onClick={() => submitForm()} />
+          <input type="button" value="Next" onClick={() => submitForm()} />
           <input type="hidden" name="origin-new" id="origin-new" />
           <input type="hidden" name="origin-lat" id="origin-lat" />
           <input type="hidden" name="origin-lon" id="origin-lon" />
