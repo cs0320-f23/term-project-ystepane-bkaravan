@@ -13,6 +13,11 @@ import edu.brown.cs.student.main.handler.ReloadHandler;
 import edu.brown.cs.student.main.handler.SearchHandler;
 import edu.brown.cs.student.main.handler.ViewHandler;
 import edu.brown.cs.student.main.parser.FactoryFailureException;
+import edu.brown.cs.student.main.rideshare.City;
+import edu.brown.cs.student.main.rideshare.Database;
+import edu.brown.cs.student.main.rideshare.Guest;
+import edu.brown.cs.student.main.rideshare.Ride;
+import edu.brown.cs.student.main.rideshare.RideType;
 import edu.brown.cs.student.main.server.Storage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +50,18 @@ public class Main {
       response.header("Access-Control-Allow-Origin", "*");
       response.header("Access-Control-Allow-Methods", "*");
     });
+    Database mainData = new Database();
+    City orig1 = new City("BostonTest",10.0, 10.0, true);
+    City dest1 = new City("ProvTest", -25.0, 32.0, false);
+    Guest hostTest = new Guest("Julia", "phnoe", "email");
+    Guest hostTest2 = new Guest("Juliasika", "phnoe", "email2");
+    mainData.createRide(orig1, dest1, RideType.DRIVER, 3, hostTest);
+    Ride testRide = new Ride(orig1, dest1, RideType.TAXI, 2, hostTest2);
+    mainData.addRide(testRide);
+    System.out.println(mainData);
+    Guest testGuest = new Guest("Bohdan", "phony", "email");
+    mainData.joinRide(testGuest, testRide);
+    System.out.println(mainData);
 
     // our handlers
     Storage csvStorage = new Storage();

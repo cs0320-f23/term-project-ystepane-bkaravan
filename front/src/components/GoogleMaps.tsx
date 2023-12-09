@@ -1,54 +1,3 @@
-// import React from "react";
-// import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-
-// const libraries = ["places"];
-// const mapContainerStyle = {
-//   width: "45vw",
-//   height: "50vh",
-// };
-// const center = {
-//   lat: 41.825226, // default latitude
-//   lng: -71.418884, // default longitude
-// };
-
-// const GoogleMapFunc = () => {
-//   const { isLoaded, loadError } = useLoadScript({
-//     googleMapsApiKey: "AIzaSyC9AgZLJoATBEYX9rkoFowN1896XuRLf9s&libraries=places",
-//     libraries: ["places"],
-//   });
-
-//   if (loadError) {
-//     return <div>Error loading maps</div>;
-//   }
-
-//   if (!isLoaded) {
-//     return <div>Loading maps</div>;
-//   }
-
-//   return (
-//     <>
-//     <div>
-//         <div className="places-container">
-//             <PlacesAutocomplete setSelected = {setSelected}/>
-//         </div>
-//       <GoogleMap
-//         mapContainerStyle={mapContainerStyle}
-//         zoom={10}
-//         center={center}
-//       >
-//         {selected && <Marker position={selected} />}
-//       </GoogleMap>
-//     </div>
-//     </>
-//   );
-// };
-
-// const PlacesAutocomplete = ({setSelected}) => {
-//     return <></>;
-// }
-
-// export default GoogleMapFunc;
-
 import { useState, useMemo, useEffect } from "react";
 import {
   GoogleMap,
@@ -155,12 +104,12 @@ function Map() {
           <input type="hidden" name="dest-new" id="dest-new"/>
           <input type="hidden" name="dest-lat" id="dest-lat"/>
           <input type="hidden" name="dest-lon" id="dest-lon"/>
-
-
         </div>
+        
         <div className="places-container">
           <PlacesAutocomplete setSelected={setSelected} isOrigin={true} />
         </div>
+
       </form>
 
       <div className="places-container-dest">
