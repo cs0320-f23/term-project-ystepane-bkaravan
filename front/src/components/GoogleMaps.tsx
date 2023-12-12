@@ -40,8 +40,8 @@ function Map() {
   );
   useEffect(() => {
     const changeDirection = (origin, destination) => {
-      console.log(origin);
-      console.log(destination);
+      // console.log(origin);
+      // console.log(destination);
       directionsService.route(
         {
           origin: origin,
@@ -51,8 +51,8 @@ function Map() {
         (result, status) => {
           if (status === google.maps.DirectionsStatus.OK) {
             setDirections(result);
-            console.log(origin);
-            console.log(destination);
+            // console.log(origin);
+            // console.log(destination);
           } else {
             console.error("error fetching directions" + result);
           }
@@ -83,7 +83,7 @@ function Map() {
       });
   }
 
-  console.log(directions);
+  // console.log(directions);
   return (
     <>
       <form id="myForm">
@@ -147,12 +147,16 @@ const PlacesAutocomplete = ({ setSelected, isOrigin }) => {
     } else {
       document.getElementById("dest-new").value = address;
     }
-    console.log(address);
+    // console.log(address);
     clearSuggestions();
 
     const results = await getGeocode({ address });
     const { lat, lng } = await getLatLng(results[0]);
     if (isOrigin) {
+      // var test = document.getElementById("origin-lat");
+      // if (test != null) {
+      //   test.value = lat;
+      // }
       document.getElementById("origin-lat").value = lat;
       document.getElementById("origin-lon").value = lng;
     } else {

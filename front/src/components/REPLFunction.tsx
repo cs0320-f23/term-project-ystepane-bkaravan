@@ -242,7 +242,7 @@ const broadbandHandler: REPLFunction = (args: string[]) => {
 };
 
 /**
- * helper function that supports the highlight command 
+ * helper function that supports the highlight command
  * @param args filepath and the search term
  * @returns a promise with the response to load a new overlay
  */
@@ -255,22 +255,25 @@ const areaSearchHandler: REPLFunction = (args: string[]) => {
     ]);
   }
   const url =
-  "http://localhost:2020/areasearch?filepath=" + args[0] + "&keyword=" + args[1];
+    "http://localhost:2020/areasearch?filepath=" +
+    args[0] +
+    "&keyword=" +
+    args[1];
   return fetch(url).then((response: Response) => {
-    return response.json().then((json) => {
-      const output: [string, string[][]] = [
-        "change",
-        [[url]],
-      ];
-      return output;
-    }).catch(() =>
-    {return Promise.resolve([
-      "Not enough args for area search, expected a filepath and a county",
-      [],
-    ])} 
-    )
+    return response
+      .json()
+      .then((json) => {
+        const output: [string, string[][]] = ["change", [[url]]];
+        return output;
+      })
+      .catch(() => {
+        return Promise.resolve([
+          "Not enough args for area search, expected a filepath and a county",
+          [],
+        ]);
+      });
   });
-}
+};
 
 /**
  * This interface checks the properties of the load.
@@ -309,6 +312,131 @@ const reloadHandler: REPLFunction = (args: string[]) => {
   });
 };
 
+interface ShowProperties {
+  rides: {}[];
+}
+
+function isShowResponse(rjson: any): rjson is ShowProperties {
+  if (!("rides" in rjson)) return false;
+  return true;
+}
+
+interface City{
+  name: string;
+  lat: number;
+  lon: number;
+}
+
+function isCity(rjson: any): rjson is City {
+  if (!("name" in rjson)) return false;
+  if (!("lon" in rjson)) return false;
+  if (!("lat" in rjson)) return false;
+  return true;
+}
+
+interface Guest {
+  name: string;
+  number: string;
+  email: string;
+}
+
+function isGuest(rjson: any): rjson is Guest {
+  if (!("name" in rjson)) return false;
+  if (!("number" in rjson)) return false;
+  if (!("email" in rjson)) return false;
+  return true;
+}
+
+
+interface Ride {
+  departureTime: number;
+  destination: City;
+  guests: Guest[];
+  host: Guest;
+  origin: City;
+  spotsLeft: number;
+  type: string;
+}
+
+function isRide(rjson: any): rjson is Ride {
+  if (!("departureTime" in rjson)) return false;
+  if (!("destination" in rjson)) return false;
+  if (!("guests" in rjson)) return false;
+  if (!("host" in rjson)) return false;
+  if (!("origin" in rjson)) return false;
+  if (!("spotsLeft" in rjson)) return false;
+  if (!("type" in rjson)) return false;
+  return true;
+}
+
+function addCity(json: City) {
+  let toRet: string = "";
+  toRet += json.name + " ";
+  toRet += json.lat + " ";
+  toRet += json.lon + " ";
+  return toRet;
+}
+
+
+function addGuest (json: Guest) {
+  let toRet: string = "";
+  toRet += json.name + " ";
+  toRet += json.number + " ";
+  toRet += json.email + " ";
+  return toRet;
+}
+
+
+function printDb(json: ShowProperties) {
+  let rides: {}[] = json.rides
+  let toRet: string[] = [];
+  console.log(rides.length);
+  for (let i = 0; i < rides.length; i++) {
+    let ride = rides[i];
+    // console.log(ride);
+    console.log("hello");
+    let current: string = "";
+    console.log(isRide(ride));
+    if (isRide(ride)) {
+      current += ride.departureTime + " ";
+      if (isCity(ride.origin)) {
+        current += addCity(ride.origin);
+      }
+      if (isCity(ride.destination)) {
+        current += addCity(ride.destination)
+      }
+      if (isGuest(ride.host)) {
+        current += addGuest(ride.host)
+      }
+      current += ride.type + " ";
+      current += ride.spotsLeft + " ";
+      for (let j = 0; j < ride.guests.length; j++) {
+        if (isGuest(ride.guests[j])) {
+          current += addGuest(ride.guests[j]);
+        }
+      }
+      console.log("got here")
+      console.log(current);
+      toRet[i] = current;
+    }
+  }
+  console.log(toRet);
+  return toRet;
+}
+const showHandler: REPLFunction = (args: string[]) => {
+  const url = "http://localhost:2020/startdb";
+  return fetch(url).then((response: Response) => {
+    return response.json().then((json) => {
+      if (isShowResponse(json)) {
+        console.log(json.rides);
+        const output: [string, string[][]] = ["success!", [printDb(json)]];
+        return output;
+      }
+      return ["Bad response ", []];
+    });
+  });
+};
+
 /**
  * This map contains references from a string representation of a command to an actual function.
  */
@@ -319,6 +447,7 @@ REPLMap["view"] = viewHandler;
 REPLMap["broadband"] = broadbandHandler;
 REPLMap["reload"] = reloadHandler;
 REPLMap["highlight"] = areaSearchHandler;
+REPLMap["show"] = showHandler;
 
 /**
  * This function handles the commands that are being passed in.

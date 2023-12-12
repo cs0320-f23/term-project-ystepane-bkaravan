@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Ride {
 
-  private City origin;
-  private City destination;
-  private RideType type;
+  private final City origin;
+  private final City destination;
+  private final RideType type;
   private int spotsLeft;
   private int departureTime;
-  private Guest host;
-  private List<Guest> guests;
+  private final Guest host;
+  private final List<Guest> guests;
 
 //  private Date departureTime;
   // add time
@@ -34,9 +34,9 @@ public class Ride {
   @Override
   public String toString() {
     String toRet = "";
-    toRet = toRet + origin.getName() + " " + destination.getName() + " "  + this.host.getName() + " " + this.spotsLeft + " " + this.guests;
+    toRet = toRet + origin.getName() + " " + destination.getName() + " " + this.type + " "
+        + this.host.getName() + " " + this.spotsLeft + " " + this.guests;
     return toRet;
   }
-
 
 }

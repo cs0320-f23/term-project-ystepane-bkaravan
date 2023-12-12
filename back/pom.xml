@@ -53,6 +53,13 @@
       <version>2.9.3</version>
     </dependency>
 
+
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.4</version>
+    </dependency>
+
     <!--
                TestNG builds useful functionality on top of JUnit, such as method annotations.
         -->

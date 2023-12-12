@@ -5,6 +5,7 @@ import static spark.Spark.after;
 import edu.brown.cs.student.main.handler.AreaSearch;
 import edu.brown.cs.student.main.handler.BoundBox;
 
+import edu.brown.cs.student.main.handler.DatabaseStart;
 import edu.brown.cs.student.main.handler.DateSubmit;
 import edu.brown.cs.student.main.handler.LoadCensusHandler;
 //import edu.brown.cs.student.main.handler.LoadData;
@@ -64,6 +65,7 @@ public class Main {
     System.out.println(mainData);
 
     // our handlers
+    Database testdata = new Database();
     Storage csvStorage = new Storage();
     Spark.get("loadcsv", new LoadHandler(csvStorage));
     Spark.get("viewcsv", new ViewHandler(csvStorage));
@@ -72,7 +74,8 @@ public class Main {
     Spark.get("reload", new ReloadHandler(csvStorage));
     Spark.get("boundbox", new BoundBox());
     Spark.get("areasearch", new AreaSearch());
-    Spark.post("/dateform", new DateSubmit());
+    Spark.get("startdb", new DatabaseStart(testdata));
+    Spark.post("/dateform", new DateSubmit(testdata));
 
 
     Spark.init();
