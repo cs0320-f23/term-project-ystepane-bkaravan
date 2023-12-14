@@ -5,10 +5,12 @@ import java.util.List;
 
 public class Database {
 
-  private List<Ride> rides;
+  private final List<Ride> rides;
+  private Ride pending;
 
   public Database() {
     this.rides = new ArrayList<>();
+    this.pending = null;
   }
 
   public void addRide(Ride toAdd) {
@@ -32,6 +34,22 @@ public class Database {
     if (!this.rides.contains(newRide)) {
       this.rides.add(newRide);
     }
+  }
+
+  public void setPending(Ride ride) {
+    this.pending = ride;
+  }
+
+  public void delPending() {
+    this.pending = null;
+  }
+
+  public boolean hasPending() {
+    return (this.pending != null);
+  }
+
+  public Ride getPending() {
+    return this.pending;
   }
 
   @Override

@@ -7,6 +7,7 @@ import edu.brown.cs.student.main.handler.BoundBox;
 
 import edu.brown.cs.student.main.handler.DatabaseStart;
 import edu.brown.cs.student.main.handler.DateSubmit;
+import edu.brown.cs.student.main.handler.HandleCreate;
 import edu.brown.cs.student.main.handler.LoadCensusHandler;
 //import edu.brown.cs.student.main.handler.LoadData;
 import edu.brown.cs.student.main.handler.LoadHandler;
@@ -76,6 +77,7 @@ public class Main {
     Spark.get("areasearch", new AreaSearch());
     Spark.get("startdb", new DatabaseStart(testdata));
     Spark.post("/dateform", new DateSubmit(testdata));
+    Spark.get("createRide", new HandleCreate(testdata));
 
 
     Spark.init();

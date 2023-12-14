@@ -17,7 +17,7 @@ import spark.Route;
 
 public class DateSubmit implements Route {
 
-  private Database base;
+  private final Database base;
 
   public DateSubmit(Database base) {
     this.base = base;
@@ -32,7 +32,9 @@ public class DateSubmit implements Route {
     City dest = new City(test1.get(4), Double.parseDouble(test1.get(5)), Double.parseDouble(test1.get(6)), false);
     Guest guest1 = new Guest ("Bogdasha", "1234556", "bogdasha@email.com");
     Ride testRide = new Ride(origin, dest, RideType.TAXI, 4, guest1);
+    Ride pending = new Ride(origin, dest);
     this.base.addRide(testRide);
+    this.base.setPending(pending);
 //    System.out.println(test1.get(5).isEmpty());
 //    System.out.println(test1);
     return null;

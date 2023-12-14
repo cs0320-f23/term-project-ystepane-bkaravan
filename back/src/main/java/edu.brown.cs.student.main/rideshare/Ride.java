@@ -7,10 +7,10 @@ public class Ride {
 
   private final City origin;
   private final City destination;
-  private final RideType type;
+  private RideType type;
   private int spotsLeft;
   private int departureTime;
-  private final Guest host;
+  private Guest host;
   private final List<Guest> guests;
 
 //  private Date departureTime;
@@ -24,11 +24,26 @@ public class Ride {
     this.guests = new ArrayList<>(spots);
   }
 
+  public Ride(City orig, City dest) {
+    this.origin = orig;
+    this.destination = dest;
+    this.type = RideType.PENDING;
+    this.spotsLeft = 2;
+    this.host = new Guest("Consider" ,"Creating", "Ride");
+    this.guests = new ArrayList<>();
+  }
+
   public void addGuest(Guest guest) {
     if (this.spotsLeft > 0 && (!this.guests.contains(guest))) {
       this.guests.add(guest);
       this.spotsLeft--;
     }
+  }
+
+  public void adjustRide(Guest host, int spotsLeft, RideType type) {
+    this.host = host;
+    this.spotsLeft = spotsLeft;
+    this.type = type;
   }
 
   @Override

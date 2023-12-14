@@ -321,7 +321,7 @@ function isShowResponse(rjson: any): rjson is ShowProperties {
   return true;
 }
 
-interface City{
+interface City {
   name: string;
   lat: number;
   lon: number;
@@ -347,7 +347,6 @@ function isGuest(rjson: any): rjson is Guest {
   return true;
 }
 
-
 interface Ride {
   departureTime: number;
   destination: City;
@@ -372,13 +371,12 @@ function isRide(rjson: any): rjson is Ride {
 function addCity(json: City) {
   let toRet: string = "";
   toRet += json.name + " ";
-  toRet += json.lat + " ";
-  toRet += json.lon + " ";
+  // toRet += json.lat + " ";
+  // toRet += json.lon + " ";
   return toRet;
 }
 
-
-function addGuest (json: Guest) {
+function addGuest(json: Guest) {
   let toRet: string = "";
   toRet += json.name + " ";
   toRet += json.number + " ";
@@ -386,41 +384,70 @@ function addGuest (json: Guest) {
   return toRet;
 }
 
-
 function printDb(json: ShowProperties) {
-  let rides: {}[] = json.rides
-  let toRet: string[] = [];
-  console.log(rides.length);
-  for (let i = 0; i < rides.length; i++) {
-    let ride = rides[i];
-    // console.log(ride);
-    console.log("hello");
-    let current: string = "";
-    console.log(isRide(ride));
-    if (isRide(ride)) {
-      current += ride.departureTime + " ";
-      if (isCity(ride.origin)) {
-        current += addCity(ride.origin);
-      }
-      if (isCity(ride.destination)) {
-        current += addCity(ride.destination)
-      }
-      if (isGuest(ride.host)) {
-        current += addGuest(ride.host)
-      }
-      current += ride.type + " ";
-      current += ride.spotsLeft + " ";
-      for (let j = 0; j < ride.guests.length; j++) {
-        if (isGuest(ride.guests[j])) {
-          current += addGuest(ride.guests[j]);
-        }
-      }
-      console.log("got here")
-      console.log(current);
-      toRet[i] = current;
+  let rides: {}[] = json.rides;
+  let toRet: string[][] = [];
+  if ("pending" in json) {
+    toRet[0] = ["Your", "pending", "ride"];
+    let pend_ride = json.pending;
+    if (isRide(pend_ride)) {
+      toRet[1] = [
+        pend_ride.departureTime.toString(),
+        addCity(pend_ride.origin),
+        addCity(pend_ride.destination),
+        addGuest(pend_ride.host),
+        pend_ride.type,
+      ];
+      toRet[2] = ["Our Database"];
+      toRet[3] = [
+        "Time",
+        "Origin",
+        "Destination",
+        "Host Information",
+        "Type",
+        "SpotsLeft",
+      ];
+    } else {
+      toRet[0] = [
+        "Time",
+        "Origin",
+        "Destination",
+        "Host Information",
+        "Type",
+        "SpotsLeft",
+      ];
     }
   }
-  console.log(toRet);
+  console.log(rides.length);
+  for (let i = 0; i < rides.length; i++) {
+    let k = 0;
+    let ride = rides[i];
+    // console.log(ride);
+    let current: string[] = [];
+    if (isRide(ride)) {
+      current.push(ride.departureTime.toString());
+      if (isCity(ride.origin)) {
+        current.push(addCity(ride.origin));
+      }
+      if (isCity(ride.destination)) {
+        current.push(addCity(ride.destination));
+      }
+      if (isGuest(ride.host)) {
+        current.push(addGuest(ride.host));
+      }
+      current.push(ride.type);
+      current.push(ride.spotsLeft.toString());
+      for (let j = 0; j < ride.guests.length; j++) {
+        if (isGuest(ride.guests[j])) {
+          current.push(addGuest(ride.guests[j]));
+        }
+      }
+      // console.log("got here");
+      // console.log(current);
+      toRet.push(current);
+    }
+  }
+  // console.log(toRet);
   return toRet;
 }
 const showHandler: REPLFunction = (args: string[]) => {
@@ -429,7 +456,31 @@ const showHandler: REPLFunction = (args: string[]) => {
     return response.json().then((json) => {
       if (isShowResponse(json)) {
         console.log(json.rides);
-        const output: [string, string[][]] = ["success!", [printDb(json)]];
+        const output: [string, string[][]] = ["success!", printDb(json)];
+        return output;
+      }
+      return ["Bad response ", []];
+    });
+  });
+};
+
+const createHandler: REPLFunction = (args: string[]) => {
+  const url =
+    "http://localhost:2020/createRide?name=" +
+    args[0] +
+    "&phone=" +
+    args[1] +
+    "&email=" +
+    args[2] +
+    "&spots=" +
+    args[3] +
+    "&type=" +
+    args[4];
+  return fetch(url).then((response: Response) => {
+    return response.json().then((json) => {
+      if (isShowResponse(json)) {
+        console.log(json.rides);
+        const output: [string, string[][]] = ["success!", printDb(json)];
         return output;
       }
       return ["Bad response ", []];
@@ -448,6 +499,7 @@ REPLMap["broadband"] = broadbandHandler;
 REPLMap["reload"] = reloadHandler;
 REPLMap["highlight"] = areaSearchHandler;
 REPLMap["show"] = showHandler;
+REPLMap["create"] = createHandler;
 
 /**
  * This function handles the commands that are being passed in.
