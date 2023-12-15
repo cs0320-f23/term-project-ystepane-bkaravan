@@ -14,11 +14,11 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class HandleCreate implements Route {
+public class HandleJoin implements Route {
 
   private final Database base;
 
-  public HandleCreate(Database base) {
+  public HandleJoin(Database base) {
     this.base = base;
   }
 
@@ -30,31 +30,37 @@ public class HandleCreate implements Route {
 
     Map<String, Object> responseMap = new HashMap<>();
 
-    if (!this.base.hasPending()) {
-      responseMap.put("error", "No pending rides");
+    if (this.base.isEmpty()) {
+      responseMap.put("error", "No rides to join");
       return adapter.toJson(responseMap);
     }
-
+    String rideID = request.queryParams("id");
     String name = request.queryParams("name");
     String phone = request.queryParams("phone");
     String email = request.queryParams("email");
-    String spotsLeft = request.queryParams("spots");
-    String type = request.queryParams("type");
 
-    if (name == null || phone == null || email == null) {
-      responseMap.put("error", "insufficient parameters");
+    if (rideID == null) {
+      responseMap.put("error", "No ID provided");
       return adapter.toJson(responseMap);
     }
 
-    Guest newHost = new Guest(name, phone, email);
+    if (name == null || phone == null || email == null) {
+      responseMap.put("error", "insufficient parameters to add a Guest");
+      return adapter.toJson(responseMap);
+    }
+    int joinID;
 
-    Ride pendingRide = this.base.getPending();
-    pendingRide.adjustRide(newHost, 4, RideType.DRIVER);
+    try {
+      joinID = Integer.parseInt(rideID);
+      Guest newGuest = new Guest(name, phone, email);
+      this.base.joinByID(newGuest, joinID);
+      responseMap.put("database", this.base);
+      return adapter.toJson(responseMap);
+    } catch (NumberFormatException e) {
+      responseMap.put("error", "RideID must be an integer");
+      return adapter.toJson(responseMap);
+    }
 
-    this.base.delPending();
-    this.base.addRide(pendingRide);
-    responseMap.put("database", this.base);
-    return adapter.toJson(responseMap);
   }
 
 }

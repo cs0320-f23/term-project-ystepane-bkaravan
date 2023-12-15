@@ -348,6 +348,7 @@ function isGuest(rjson: any): rjson is Guest {
 }
 
 interface Ride {
+  rideID: number;
   departureTime: number;
   destination: City;
   guests: Guest[];
@@ -400,31 +401,35 @@ function printDb(json: ShowProperties) {
       ];
       toRet[2] = ["Our Database"];
       toRet[3] = [
+        "RideID",
         "Time",
         "Origin",
         "Destination",
         "Host Information",
         "Type",
         "SpotsLeft",
-      ];
-    } else {
-      toRet[0] = [
-        "Time",
-        "Origin",
-        "Destination",
-        "Host Information",
-        "Type",
-        "SpotsLeft",
+        "Guests",
       ];
     }
+  } else {
+    toRet[0] = [
+      "RideID",
+      "Time",
+      "Origin",
+      "Destination",
+      "Host Information",
+      "Type",
+      "SpotsLeft",
+      "Guests",
+    ];
   }
   console.log(rides.length);
   for (let i = 0; i < rides.length; i++) {
-    let k = 0;
     let ride = rides[i];
     // console.log(ride);
     let current: string[] = [];
     if (isRide(ride)) {
+      current.push(ride.rideID.toString());
       current.push(ride.departureTime.toString());
       if (isCity(ride.origin)) {
         current.push(addCity(ride.origin));
@@ -464,7 +469,22 @@ const showHandler: REPLFunction = (args: string[]) => {
   });
 };
 
+interface CreateProperties {
+  database: ShowProperties;
+}
+
+function isCreateResponse(rjson: any): rjson is CreateProperties {
+  if (!("database" in rjson)) return false;
+  return true;
+}
+
 const createHandler: REPLFunction = (args: string[]) => {
+  if (args.length < 5) {
+    return Promise.resolve([
+      "Not enough args for creating a ride, expected name, phone, email, number of spots, type of the rider",
+      [],
+    ]);
+  }
   const url =
     "http://localhost:2020/createRide?name=" +
     args[0] +
@@ -476,14 +496,50 @@ const createHandler: REPLFunction = (args: string[]) => {
     args[3] +
     "&type=" +
     args[4];
+  console.log(url);
   return fetch(url).then((response: Response) => {
     return response.json().then((json) => {
-      if (isShowResponse(json)) {
-        console.log(json.rides);
-        const output: [string, string[][]] = ["success!", printDb(json)];
+      if (isCreateResponse(json)) {
+        //console.log(json.rides);
+        const output: [string, string[][]] = [
+          "success!",
+          printDb(json.database),
+        ];
         return output;
       }
-      return ["Bad response ", []];
+      return ["Bad response ", [[json.error], ["Please create pending ride with next"]]]; //double check this
+    });
+  });
+};
+
+const joinHandler: REPLFunction = (args: string[]) => {
+  if (args.length < 3) {
+    return Promise.resolve([
+      "Not enough args for joining the ride, expected, name, phone, email, rideID",
+      [],
+    ]);
+  }
+  const url =
+    "http://localhost:2020/joinRide?name=" +
+    args[0] +
+    "&phone=" +
+    args[1] +
+    "&email=" +
+    args[2] +
+    "&id=" +
+    args[3];
+  console.log(url);
+  return fetch(url).then((response: Response) => {
+    return response.json().then((json) => {
+      if (isCreateResponse(json)) {
+        //console.log(json.rides);
+        const output: [string, string[][]] = [
+          "success!",
+          printDb(json.database),
+        ];
+        return output;
+      }
+      return ["Bad response ", [[json.error]]]; //double check this
     });
   });
 };
@@ -500,6 +556,7 @@ REPLMap["reload"] = reloadHandler;
 REPLMap["highlight"] = areaSearchHandler;
 REPLMap["show"] = showHandler;
 REPLMap["create"] = createHandler;
+REPLMap["join"] = joinHandler;
 
 /**
  * This function handles the commands that are being passed in.

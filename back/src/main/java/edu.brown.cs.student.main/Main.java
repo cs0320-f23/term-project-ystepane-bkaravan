@@ -8,6 +8,7 @@ import edu.brown.cs.student.main.handler.BoundBox;
 import edu.brown.cs.student.main.handler.DatabaseStart;
 import edu.brown.cs.student.main.handler.DateSubmit;
 import edu.brown.cs.student.main.handler.HandleCreate;
+import edu.brown.cs.student.main.handler.HandleJoin;
 import edu.brown.cs.student.main.handler.LoadCensusHandler;
 //import edu.brown.cs.student.main.handler.LoadData;
 import edu.brown.cs.student.main.handler.LoadHandler;
@@ -52,21 +53,10 @@ public class Main {
       response.header("Access-Control-Allow-Origin", "*");
       response.header("Access-Control-Allow-Methods", "*");
     });
-    Database mainData = new Database();
-    City orig1 = new City("BostonTest",10.0, 10.0, true);
-    City dest1 = new City("ProvTest", -25.0, 32.0, false);
-    Guest hostTest = new Guest("Julia", "phnoe", "email");
-    Guest hostTest2 = new Guest("Juliasika", "phnoe", "email2");
-    mainData.createRide(orig1, dest1, RideType.DRIVER, 3, hostTest);
-    Ride testRide = new Ride(orig1, dest1, RideType.TAXI, 2, hostTest2);
-    mainData.addRide(testRide);
-    System.out.println(mainData);
-    Guest testGuest = new Guest("Bohdan", "phony", "email");
-    mainData.joinRide(testGuest, testRide);
-    System.out.println(mainData);
 
     // our handlers
     Database testdata = new Database();
+    populateDb(testdata);
     Storage csvStorage = new Storage();
     Spark.get("loadcsv", new LoadHandler(csvStorage));
     Spark.get("viewcsv", new ViewHandler(csvStorage));
@@ -78,6 +68,7 @@ public class Main {
     Spark.get("startdb", new DatabaseStart(testdata));
     Spark.post("/dateform", new DateSubmit(testdata));
     Spark.get("createRide", new HandleCreate(testdata));
+    Spark.get("joinRide", new HandleJoin(testdata));
 
 
     Spark.init();
@@ -85,6 +76,20 @@ public class Main {
     System.out.println("running");
 
     System.out.println("Server started at http://localhost:" + port);
+  }
+
+  public static void populateDb(Database db) {
+    City orig1 = new City("BostonTest",10.0, 10.0, true);
+    City dest1 = new City("ProvTest", -25.0, 32.0, false);
+    Guest hostTest = new Guest("Julia", "phnoe", "email");
+    Guest hostTest2 = new Guest("Juliasika", "phnoe", "email2");
+    db.createRide(orig1, dest1, RideType.DRIVER, 3, hostTest);
+    Ride testRide = new Ride(orig1, dest1, RideType.TAXI, 2, hostTest2);
+    db.addRide(testRide);
+    //System.out.println(db);
+    Guest testGuest = new Guest("Bohdan", "phony", "email");
+    db.joinRide(testGuest, testRide);
+    //System.out.println(db);
   }
 
   Main(String[] args) {

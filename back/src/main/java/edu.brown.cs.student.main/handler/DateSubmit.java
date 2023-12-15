@@ -33,7 +33,6 @@ public class DateSubmit implements Route {
     Guest guest1 = new Guest ("Bogdasha", "1234556", "bogdasha@email.com");
     Ride testRide = new Ride(origin, dest, RideType.TAXI, 4, guest1);
     Ride pending = new Ride(origin, dest);
-    this.base.addRide(testRide);
     this.base.setPending(pending);
 //    System.out.println(test1.get(5).isEmpty());
 //    System.out.println(test1);
@@ -54,7 +53,7 @@ public class DateSubmit implements Route {
     for (FileItem item : items) {
       if (item.isFormField()) {
         String stringRep = item.getString();
-        System.out.println("Current item " + stringRep);
+        //System.out.println("Current item " + stringRep);
         toRet.add(stringRep);
       }
     }

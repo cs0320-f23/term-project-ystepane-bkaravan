@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Ride {
 
+  private int rideID;
   private final City origin;
   private final City destination;
   private RideType type;
@@ -16,6 +17,7 @@ public class Ride {
 //  private Date departureTime;
   // add time
   public Ride(City orig, City dest, RideType type, int spots, Guest host) {
+    this.rideID = 0;
     this.origin = orig;
     this.destination = dest;
     this.type = type;
@@ -25,6 +27,7 @@ public class Ride {
   }
 
   public Ride(City orig, City dest) {
+    this.rideID = 0;
     this.origin = orig;
     this.destination = dest;
     this.type = RideType.PENDING;
@@ -40,16 +43,24 @@ public class Ride {
     }
   }
 
+  public boolean idMatch(int id) {
+    return this.rideID == id;
+  }
+
   public void adjustRide(Guest host, int spotsLeft, RideType type) {
     this.host = host;
     this.spotsLeft = spotsLeft;
     this.type = type;
   }
 
+  public void setRideID(int ID) {
+    this.rideID = ID;
+  }
+
   @Override
   public String toString() {
     String toRet = "";
-    toRet = toRet + origin.getName() + " " + destination.getName() + " " + this.type + " "
+    toRet = toRet + "ID: " + this.rideID + origin.getName() + " " + destination.getName() + " " + this.type + " "
         + this.host.getName() + " " + this.spotsLeft + " " + this.guests;
     return toRet;
   }
