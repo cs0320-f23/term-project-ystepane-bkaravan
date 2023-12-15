@@ -1,5 +1,15 @@
 export default function UserBox() {
   function submitForm() {
+    // Get form elements
+    const nameInput = document.getElementById("name");
+    const phoneInput = document.getElementById("phone");
+    const emailInput = document.getElementById("email");
+
+    // Check if required fields are filled
+    if (!nameInput.value || !phoneInput.value || !emailInput.value) {
+      alert("Please fill in your information section");
+      return;
+    }
     //document.getElementById("origin-new").value = selected;
     var form = document.getElementById("myUserForm");
     var formData = new FormData(form);
