@@ -60,7 +60,6 @@ public class HandleJoin implements Route {
       responseMap.put("error", "RideID must be an integer");
       return adapter.toJson(responseMap);
     }
-
   }
 
 }

@@ -38,19 +38,6 @@ export function REPLInput(props: REPLInputProps) {
 
   // this is for oneTime empty load, but it does not quite work
 
-  // useEffect(() => {
-  //   async function fetchEmptyLoad() {
-  //     // const rest = await fetch(
-  //     //   "http://localhost:3232/loadcsv?filepath=data/csvtest/empty.csv"
-  //     // );
-  //     // const json = rest.json();
-  //     // const emptyFile: string[][] = await json["loaded"];
-  //     // props.setFile(emptyFile);
-  //     setFile([[]]);
-  //   }
-  //   fetchEmptyLoad();
-  // }, []);
-
   // this should call the mapping from REPLFunction
   async function handleSubmit(commandString: string) {
     let viewFlag = false;

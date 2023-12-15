@@ -81,8 +81,8 @@ public class Main {
   public static void populateDb(Database db) {
     City orig1 = new City("BostonTest",10.0, 10.0, true);
     City dest1 = new City("ProvTest", -25.0, 32.0, false);
-    Guest hostTest = new Guest("Julia", "phnoe", "email");
-    Guest hostTest2 = new Guest("Juliasika", "phnoe", "email2");
+    Guest hostTest = new Guest("Julia", "4134556774", "sample_email@brown.edu");
+    Guest hostTest2 = new Guest("Kevin Mighty", "9014569434", "cool_email2@brown.edu");
     db.createRide(orig1, dest1, RideType.DRIVER, 3, hostTest);
     Ride testRide = new Ride(orig1, dest1, RideType.TAXI, 2, hostTest2);
     db.addRide(testRide);

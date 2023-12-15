@@ -18,6 +18,7 @@ import {
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
 import { ACCESS_TOKEN_2 } from "../private/api";
+import { commandHandler } from "./REPLFunction";
 
 export default function Places() {
   const { isLoaded } = useLoadScript({
@@ -75,6 +76,7 @@ function Map() {
     })
       .then((response) => {
         // Handle the response as needed
+        commandHandler("show", []);
         console.log("Form submitted successfully:", response);
         // You can update the current page or perform other actions here
       })
@@ -97,23 +99,22 @@ function Map() {
             name="pickuptime"
             required
           />
-          <input type="button" value="Next" onClick={() => submitForm()} />
+          <input type="button" value="Create Pending" onClick={() => submitForm()} />
           <input type="hidden" name="origin-new" id="origin-new" />
           <input type="hidden" name="origin-lat" id="origin-lat" />
           <input type="hidden" name="origin-lon" id="origin-lon" />
-          <input type="hidden" name="dest-new" id="dest-new"/>
-          <input type="hidden" name="dest-lat" id="dest-lat"/>
-          <input type="hidden" name="dest-lon" id="dest-lon"/>
+          <input type="hidden" name="dest-new" id="dest-new" />
+          <input type="hidden" name="dest-lat" id="dest-lat" />
+          <input type="hidden" name="dest-lon" id="dest-lon" />
         </div>
-        
+
         <div className="places-container">
           <PlacesAutocomplete setSelected={setSelected} isOrigin={true} />
         </div>
-
       </form>
 
       <div className="places-container-dest">
-        <PlacesAutocomplete setSelected={setSelectedDest} isOrigin={false}/>
+        <PlacesAutocomplete setSelected={setSelectedDest} isOrigin={false} />
       </div>
 
       <GoogleMap
