@@ -11,13 +11,19 @@
 
 .repl-history {
   position: absolute;
-  top: 0;
+  top: 30px;
   left: 50%;
-  height: 70vh;
+  height: 65vh;
   width: 50%;
   overflow: scroll;
 }
 
+.user-box {
+  position: absolute;
+  top: 0;
+  left: 51%;
+  z-index: 15;
+}
 .repl-input {
   position: absolute;
   top: 70vh;

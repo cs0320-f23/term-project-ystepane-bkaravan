@@ -5,6 +5,7 @@ import { REPLInput } from "./REPLInput";
 import MapBox from "./MapBox";
 import GoogleMapFunc from "./GoogleMaps";
 import Places from "./GoogleMaps";
+import UserBox from "./User";
 /**
  * This is the main REPL class. It binds history and the REPLInput together.
  */
@@ -24,6 +25,7 @@ export default function REPL() {
       /> */}
       {/* <GoogleMapFunc /> */}
       <Places />
+      <UserBox />
       <REPLHistory commands={history} />
       <REPLInput
         commands={history}
