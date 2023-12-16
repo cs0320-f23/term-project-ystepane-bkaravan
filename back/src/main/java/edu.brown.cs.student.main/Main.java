@@ -14,6 +14,7 @@ import edu.brown.cs.student.main.handler.LoadCensusHandler;
 import edu.brown.cs.student.main.handler.LoadHandler;
 import edu.brown.cs.student.main.handler.ReloadHandler;
 import edu.brown.cs.student.main.handler.SearchHandler;
+import edu.brown.cs.student.main.handler.UserSubmit;
 import edu.brown.cs.student.main.handler.ViewHandler;
 import edu.brown.cs.student.main.parser.FactoryFailureException;
 import edu.brown.cs.student.main.rideshare.City;
@@ -67,6 +68,7 @@ public class Main {
     Spark.get("areasearch", new AreaSearch());
     Spark.get("startdb", new DatabaseStart(testdata));
     Spark.post("/dateform", new DateSubmit(testdata));
+    Spark.post("/userform", new UserSubmit(testdata));
     Spark.get("createRide", new HandleCreate(testdata));
     Spark.get("joinRide", new HandleJoin(testdata));
 
@@ -83,8 +85,8 @@ public class Main {
     City dest1 = new City("ProvTest", -25.0, 32.0, false);
     Guest hostTest = new Guest("Julia", "4134556774", "sample_email@brown.edu");
     Guest hostTest2 = new Guest("Kevin Mighty", "9014569434", "cool_email2@brown.edu");
-    db.createRide(orig1, dest1, RideType.DRIVER, 3, hostTest);
-    Ride testRide = new Ride(orig1, dest1, RideType.TAXI, 2, hostTest2);
+    db.createRide(orig1, dest1, RideType.DRIVER, 3, hostTest, "2024-01-13 08:30");
+    Ride testRide = new Ride(orig1, dest1, RideType.TAXI, 2, hostTest2, "2023-12-18 13:45");
     db.addRide(testRide);
     //System.out.println(db);
     Guest testGuest = new Guest("Bohdan", "phony", "email");

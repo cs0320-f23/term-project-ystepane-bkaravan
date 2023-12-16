@@ -27,7 +27,6 @@ public class HandleJoin implements Route {
     Moshi moshi = new Moshi.Builder().build();
     Type mapStringObj = Types.newParameterizedType(Map.class, String.class, Object.class);
     JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObj);
-
     Map<String, Object> responseMap = new HashMap<>();
 
     if (this.base.isEmpty()) {
@@ -35,25 +34,30 @@ public class HandleJoin implements Route {
       return adapter.toJson(responseMap);
     }
     String rideID = request.queryParams("id");
-    String name = request.queryParams("name");
-    String phone = request.queryParams("phone");
-    String email = request.queryParams("email");
 
     if (rideID == null) {
       responseMap.put("error", "No ID provided");
       return adapter.toJson(responseMap);
     }
 
-    if (name == null || phone == null || email == null) {
-      responseMap.put("error", "insufficient parameters to add a Guest");
-      return adapter.toJson(responseMap);
-    }
     int joinID;
 
     try {
       joinID = Integer.parseInt(rideID);
-      Guest newGuest = new Guest(name, phone, email);
-      this.base.joinByID(newGuest, joinID);
+      if (this.base.hasCurrentUser()) {
+        //join the current user with the inputID
+        Ride potential = this.base.getRideByID(joinID);
+        if (potential != null) {
+          potential.addGuest(this.base.getCurrentUser());
+          this.base.setCurrentUser(null);
+        } else {
+          responseMap.put("error", "ID not found or the ride is full");
+          return adapter.toJson(responseMap);
+        }
+      } else {
+        responseMap.put("error", "save your information before joining");
+        return adapter.toJson(responseMap);
+      }
       responseMap.put("database", this.base);
       return adapter.toJson(responseMap);
     } catch (NumberFormatException e) {

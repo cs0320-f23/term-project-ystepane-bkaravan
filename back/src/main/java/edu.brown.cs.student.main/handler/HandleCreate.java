@@ -31,30 +31,39 @@ public class HandleCreate implements Route {
     Map<String, Object> responseMap = new HashMap<>();
 
     if (!this.base.hasPending()) {
-      responseMap.put("error", "No pending rides");
+      responseMap.put("error", "Please create a pending ride first");
       return adapter.toJson(responseMap);
     }
 
-    String name = request.queryParams("name");
-    String phone = request.queryParams("phone");
-    String email = request.queryParams("email");
+    if (!this.base.hasCurrentUser()) {
+      responseMap.put("error", "Please save your information before creating a ride");
+      return adapter.toJson(responseMap);
+    }
+
     String spotsLeft = request.queryParams("spots");
     String type = request.queryParams("type");
+    int newSpots;
 
-    if (name == null || phone == null || email == null) {
-      responseMap.put("error", "insufficient parameters");
+    try {
+      newSpots = Integer.parseInt(spotsLeft);
+      RideType newType = this.base.parseRideType(type);
+      if (newType == null) {
+        responseMap.put("error", "Expected driver or taxi for ride type");
+        return adapter.toJson(responseMap);
+      }
+      Guest newHost = this.base.getCurrentUser();
+      Ride pendingRide = this.base.getPending();
+      pendingRide.adjustRide(newHost, newSpots, newType); // we can adjust the points of the ride here
+      this.base.delPending();
+      this.base.addRide(pendingRide);
+      responseMap.put("database", this.base);
+      return adapter.toJson(responseMap);
+
+    } catch (NumberFormatException e ) {
+      responseMap.put("error", "Please provide the number of spots in the ride");
       return adapter.toJson(responseMap);
     }
 
-    Guest newHost = new Guest(name, phone, email);
-
-    Ride pendingRide = this.base.getPending();
-    pendingRide.adjustRide(newHost, 4, RideType.DRIVER);
-
-    this.base.delPending();
-    this.base.addRide(pendingRide);
-    responseMap.put("database", this.base);
-    return adapter.toJson(responseMap);
   }
 
 }

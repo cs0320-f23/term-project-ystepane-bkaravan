@@ -14,7 +14,7 @@ export default function UserBox() {
     var form = document.getElementById("myUserForm");
     var formData = new FormData(form);
 
-    fetch("TODO", {
+    fetch("http://localhost:2020/userform", {
       method: "POST",
       body: formData,
     })

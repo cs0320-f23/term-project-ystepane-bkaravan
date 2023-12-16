@@ -6,17 +6,20 @@ import java.util.List;
 public class Ride {
 
   private int rideID;
+  private int rideScore;
   private final City origin;
   private final City destination;
   private RideType type;
   private int spotsLeft;
-  private int departureTime;
+  private String departureTime;
   private Guest host;
   private final List<Guest> guests;
 
 //  private Date departureTime;
   // add time
-  public Ride(City orig, City dest, RideType type, int spots, Guest host) {
+  public Ride(City orig, City dest, RideType type, int spots, Guest host, String time) {
+    this.departureTime = time;
+    this.rideScore = 0;
     this.rideID = 0;
     this.origin = orig;
     this.destination = dest;
@@ -26,7 +29,8 @@ public class Ride {
     this.guests = new ArrayList<>(spots);
   }
 
-  public Ride(City orig, City dest) {
+  public Ride(City orig, City dest, String time) {
+    this.departureTime = time;
     this.rideID = 0;
     this.origin = orig;
     this.destination = dest;
@@ -52,6 +56,8 @@ public class Ride {
     this.spotsLeft = spotsLeft;
     this.type = type;
   }
+
+  public boolean hasSpace() {return this.spotsLeft > 0;}
 
   public void setRideID(int ID) {
     this.rideID = ID;
