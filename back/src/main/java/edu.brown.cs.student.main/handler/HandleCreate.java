@@ -53,8 +53,10 @@ public class HandleCreate implements Route {
       }
       Guest newHost = this.base.getCurrentUser();
       Ride pendingRide = this.base.getPending();
-      pendingRide.adjustRide(newHost, newSpots, newType); // we can adjust the points of the ride here
+      pendingRide.adjustRide(newHost, newSpots, newType, this.base.getCurrentUserScore()); // we can adjust the points of the ride here
       this.base.delPending();
+      this.base.setCurrentUserScore(0); // double check these
+      this.base.setCurrentUser(null);
       this.base.addRide(pendingRide);
       responseMap.put("database", this.base);
       return adapter.toJson(responseMap);

@@ -44,20 +44,45 @@ public class HandleJoin implements Route {
 
     try {
       joinID = Integer.parseInt(rideID);
-      if (this.base.hasCurrentUser()) {
-        //join the current user with the inputID
-        Ride potential = this.base.getRideByID(joinID);
-        if (potential != null) {
-          potential.addGuest(this.base.getCurrentUser());
-          this.base.setCurrentUser(null);
-        } else {
-          responseMap.put("error", "ID not found or the ride is full");
-          return adapter.toJson(responseMap);
-        }
-      } else {
+
+      if (!this.base.hasCurrentUser()) {
         responseMap.put("error", "save your information before joining");
         return adapter.toJson(responseMap);
       }
+      Ride potential = this.base.getRideByID(joinID);
+
+      if (potential == null) {
+        responseMap.put("error", "ID not found or the ride is full");
+        return adapter.toJson(responseMap);
+      }
+
+      if (!(potential.addGuest(this.base.getCurrentUser(), this.base.getCurrentUserScore()))) {
+        responseMap.put("error", "User might exist or the ride is full");
+        return adapter.toJson(responseMap);
+      }
+
+      this.base.setCurrentUser(null);
+      this.base.setCurrentUserScore(0);
+
+//      if (this.base.hasCurrentUser()) {
+//        //join the current user with the inputID
+//        Ride potential = this.base.getRideByID(joinID);
+//        if (potential != null) {
+//          if (potential.addGuest(this.base.getCurrentUser(), this.base.getCurrentUserScore())) {
+//            this.base.setCurrentUser(null);
+//            this.base.setCurrentUserScore(0);
+//          } else {
+//            responseMap.put("error", "User might exist or the ride is full");
+//            return adapter.toJson(responseMap);
+//          }
+//        } else {
+//          responseMap.put("error", "ID not found or the ride is full");
+//          return adapter.toJson(responseMap);
+//        }
+//      } else {
+//        responseMap.put("error", "save your information before joining");
+//        return adapter.toJson(responseMap);
+//      }
       responseMap.put("database", this.base);
       return adapter.toJson(responseMap);
     } catch (NumberFormatException e) {

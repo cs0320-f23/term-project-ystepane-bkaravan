@@ -7,6 +7,7 @@ import edu.brown.cs.student.main.handler.BoundBox;
 
 import edu.brown.cs.student.main.handler.DatabaseStart;
 import edu.brown.cs.student.main.handler.DateSubmit;
+import edu.brown.cs.student.main.handler.FilterHandler;
 import edu.brown.cs.student.main.handler.HandleCreate;
 import edu.brown.cs.student.main.handler.HandleJoin;
 import edu.brown.cs.student.main.handler.LoadCensusHandler;
@@ -32,11 +33,6 @@ import spark.Spark;
  * The Main class of our project. This is where execution begins.
  */
 public class Main {
-
-  private ArrayList<String> endpoints;
-
-  public static class GeoResponse {
-  }
 
   /**
    * The initial method called when execution begins.
@@ -71,6 +67,7 @@ public class Main {
     Spark.post("/userform", new UserSubmit(testdata));
     Spark.get("createRide", new HandleCreate(testdata));
     Spark.get("joinRide", new HandleJoin(testdata));
+    Spark.get("filterRide", new FilterHandler(testdata));
 
 
     Spark.init();

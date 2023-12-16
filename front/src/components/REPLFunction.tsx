@@ -349,7 +349,8 @@ function isGuest(rjson: any): rjson is Guest {
 
 interface Ride {
   rideID: number;
-  departureTime: number;
+  rideScore: number;
+  departureTime: string;
   destination: City;
   guests: Guest[];
   host: Guest;
@@ -359,6 +360,8 @@ interface Ride {
 }
 
 function isRide(rjson: any): rjson is Ride {
+  if (!("rideID" in rjson)) return false;
+  if (!("rideScore" in rjson)) return false;
   if (!("departureTime" in rjson)) return false;
   if (!("destination" in rjson)) return false;
   if (!("guests" in rjson)) return false;
@@ -387,6 +390,17 @@ function addGuest(json: Guest) {
 
 function printDb(json: ShowProperties) {
   let rides: {}[] = json.rides;
+  const beginningSeq: string[] = [
+    "RideID",
+    "RideScore",
+    "Time",
+    "Origin",
+    "Destination",
+    "Host Information",
+    "Type",
+    "SpotsLeft",
+    "Guests",
+  ];
   let toRet: string[][] = [];
   if ("pending" in json) {
     toRet[0] = ["Your", "pending", "ride"];
@@ -400,28 +414,10 @@ function printDb(json: ShowProperties) {
         pend_ride.type,
       ];
       toRet[2] = ["Our Database"];
-      toRet[3] = [
-        "RideID",
-        "Time",
-        "Origin",
-        "Destination",
-        "Host Information",
-        "Type",
-        "SpotsLeft",
-        "Guests",
-      ];
+      toRet[3] = beginningSeq;
     }
   } else {
-    toRet[0] = [
-      "RideID",
-      "Time",
-      "Origin",
-      "Destination",
-      "Host Information",
-      "Type",
-      "SpotsLeft",
-      "Guests",
-    ];
+    toRet[0] = beginningSeq;
   }
   console.log(rides.length);
   for (let i = 0; i < rides.length; i++) {
@@ -430,7 +426,8 @@ function printDb(json: ShowProperties) {
     let current: string[] = [];
     if (isRide(ride)) {
       current.push(ride.rideID.toString());
-      current.push(ride.departureTime.toString());
+      current.push(ride.rideScore.toString());
+      current.push(ride.departureTime);
       if (isCity(ride.origin)) {
         current.push(addCity(ride.origin));
       }
@@ -495,7 +492,7 @@ const createHandler: REPLFunction = (args: string[]) => {
         ];
         return output;
       }
-      return ["Bad response ", [[json.error]]]; //double check this
+      return [json.error, []]; //double check this
     });
   });
 };

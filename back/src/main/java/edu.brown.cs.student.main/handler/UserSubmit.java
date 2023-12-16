@@ -33,6 +33,7 @@ public class UserSubmit implements Route {
 //    System.out.println(currentUserScore);
 //    System.out.println(currentUser);
     this.base.setCurrentUser(currentUser);
+    this.base.setCurrentUserScore(currentUserScore);
 
 //    System.out.println(test1.get(5).isEmpty());
 //    System.out.println(test1);

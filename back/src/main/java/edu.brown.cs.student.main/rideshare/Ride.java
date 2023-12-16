@@ -11,7 +11,7 @@ public class Ride {
   private final City destination;
   private RideType type;
   private int spotsLeft;
-  private String departureTime;
+  private final String departureTime;
   private Guest host;
   private final List<Guest> guests;
 
@@ -40,21 +40,29 @@ public class Ride {
     this.guests = new ArrayList<>();
   }
 
-  public void addGuest(Guest guest) {
+  public boolean addGuest(Guest guest, int score) {
     if (this.spotsLeft > 0 && (!this.guests.contains(guest))) {
       this.guests.add(guest);
+      this.rideScore += score;
       this.spotsLeft--;
+      return true;
     }
+    return false;
   }
 
   public boolean idMatch(int id) {
     return this.rideID == id;
   }
 
-  public void adjustRide(Guest host, int spotsLeft, RideType type) {
+  public void adjustRide(Guest host, int spotsLeft, RideType type, int score) {
     this.host = host;
     this.spotsLeft = spotsLeft;
     this.type = type;
+    this.rideScore = score;
+  }
+
+  public int getRideScore() {
+    return this.rideScore;
   }
 
   public boolean hasSpace() {return this.spotsLeft > 0;}

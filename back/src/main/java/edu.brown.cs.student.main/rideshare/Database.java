@@ -1,6 +1,9 @@
 package edu.brown.cs.student.main.rideshare;
 
+import edu.brown.cs.student.main.ridesorters.ScoreCompare;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -35,19 +38,19 @@ public class Database {
 //    Ride currentRide = this.rides.get();
     for (Ride checkRide : this.rides) {
       if (checkRide.equals(ride)) {
-        checkRide.addGuest(guest);
+        checkRide.addGuest(guest, 0);
       }
     }
   }
 
-  public void joinByID(Guest guest, int id) {
-    for (Ride checkRide : this.rides) {
-      if (checkRide.idMatch(id)) {
-        checkRide.addGuest(guest);
-        return;
-      }
-    }
-  }
+//  public void joinByID(Guest guest, int id) {
+//    for (Ride checkRide : this.rides) {
+//      if (checkRide.idMatch(id)) {
+//        checkRide.addGuest(guest, 0);
+//        return;
+//      }
+//    }
+//  }
 
   // add time
   public void createRide(City orig, City dest, RideType type, int spotsLeft, Guest host, String time) {
@@ -100,6 +103,62 @@ public class Database {
     return null;
   }
 
+  public void filterByScore() {
+    ScoreCompare compare = new ScoreCompare();
+    Collections.sort(this.rides, compare);
+  }
+
+  public void filterByScoreUser() {
+
+  }
+
+  public void filterByDate() {
+
+  }
+  public void filterByDateUser() {
+
+  }
+
+  public void filterByDistance() {
+
+  }
+
+  public void filterByDistanceUser() {
+
+  }
+
+
+
+  public boolean handleFilter(String mode) {
+    return switch (mode) {
+      case "score" -> {
+        if (this.hasCurrentUser()) {
+          filterByScoreUser();
+        } else {
+          filterByScore();
+        }
+        yield true;
+      }
+      case "time" -> {
+        if (this.hasPending()) {
+          filterByDateUser();
+        } else {
+          filterByDate();
+        }
+        yield true;
+      }
+      case "distance" -> {
+        if (this.hasPending()) {
+          filterByDistanceUser();
+        } else {
+          filterByDistance();
+        }
+        yield true;
+      }
+      default -> false;
+    };
+  }
+
   public boolean isEmpty() {
     return this.rides.isEmpty();
   }
@@ -116,6 +175,7 @@ public class Database {
     this.currentUser = guest;
   }
   public Guest getCurrentUser() {return this.currentUser;}
+  public int getCurrentUserScore() {return this.currentUserScore;}
   public void setCurrentUserScore(int score) {this.currentUserScore = score;};
 
   public boolean hasPending() {
