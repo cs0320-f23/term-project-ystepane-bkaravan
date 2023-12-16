@@ -1,9 +1,12 @@
 package edu.brown.cs.student.main.rideshare;
 
+import edu.brown.cs.student.main.ridesorters.DistanceCompare;
+import edu.brown.cs.student.main.ridesorters.IDCompare;
 import edu.brown.cs.student.main.ridesorters.ScoreCompare;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -109,7 +112,7 @@ public class Database {
   }
 
   public void filterByScoreUser() {
-
+    Collections.sort(this.rides, Comparator.comparingInt(ride -> Math.abs(ride.getRideScore() - this.currentUserScore)));
   }
 
   public void filterByDate() {
@@ -120,11 +123,17 @@ public class Database {
   }
 
   public void filterByDistance() {
-
+    DistanceCompare compare = new DistanceCompare();
+    Collections.sort(this.rides, compare);
   }
 
   public void filterByDistanceUser() {
+    Collections.sort(this.rides, Comparator.comparingDouble(ride -> Math.abs(this.pending.getOrigin().compareDistance(ride.getOrigin()))));
+  }
 
+  public void filterByID() {
+    IDCompare compare = new IDCompare();
+    Collections.sort(this.rides, compare);
   }
 
 
@@ -155,6 +164,11 @@ public class Database {
         }
         yield true;
       }
+      case "id" -> {
+        filterByID();
+        yield true;
+      }
+
       default -> false;
     };
   }

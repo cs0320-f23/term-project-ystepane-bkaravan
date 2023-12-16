@@ -518,6 +518,27 @@ const joinHandler: REPLFunction = (args: string[]) => {
   });
 };
 
+const filterHandler: REPLFunction = (args: string[]) => {
+  if (args.length < 1) {
+    return Promise.resolve(["Expected use: filter <mode>, either distance, score, or time", []]);
+  }
+  const url = "http://localhost:2020/filterRide?param=" + args[0];
+  console.log(url);
+  return fetch(url).then((response: Response) => {
+    return response.json().then((json) => {
+      if (isCreateResponse(json)) {
+        //console.log(json.rides);
+        const output: [string, string[][]] = [
+          "success!",
+          printDb(json.database),
+        ];
+        return output;
+      }
+      return [json.error, []]; //double check this
+    });
+  });
+};
+
 /**
  * This map contains references from a string representation of a command to an actual function.
  */
@@ -531,6 +552,7 @@ REPLMap["highlight"] = areaSearchHandler;
 REPLMap["show"] = showHandler;
 REPLMap["create"] = createHandler;
 REPLMap["join"] = joinHandler;
+REPLMap["filter"] = filterHandler;
 
 /**
  * This function handles the commands that are being passed in.

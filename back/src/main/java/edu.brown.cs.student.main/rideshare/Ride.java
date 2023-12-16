@@ -61,6 +61,13 @@ public class Ride {
     this.rideScore = score;
   }
 
+  public double getDistance() {
+    double d1 = Math.pow((this.destination.getLat() - this.origin.getLat()), 2);
+    double d2 = Math.pow((this.destination.getLon() - this.origin.getLon()), 2);
+    return Math.sqrt(d1 + d2);
+  }
+
+  public City getOrigin() {return this.origin;}
   public int getRideScore() {
     return this.rideScore;
   }
@@ -70,6 +77,7 @@ public class Ride {
   public void setRideID(int ID) {
     this.rideID = ID;
   }
+  public int getRideID() {return this.rideID; }
 
   @Override
   public String toString() {
