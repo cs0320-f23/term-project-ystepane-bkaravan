@@ -1,24 +1,27 @@
 package edu.brown.cs.student.main.rideshare;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Ride {
 
+  private Date time;
   private int rideID;
   private int rideScore;
   private final City origin;
   private final City destination;
   private RideType type;
   private int spotsLeft;
-  private final String departureTime;
+  //private final String departureTime;
   private Guest host;
   private final List<Guest> guests;
 
 //  private Date departureTime;
   // add time
-  public Ride(City orig, City dest, RideType type, int spots, Guest host, String time) {
-    this.departureTime = time;
+  public Ride(City orig, City dest, RideType type, int spots, Guest host, Date time) {
+    //this.departureTime = time;
+    this.time = time;
     this.rideScore = 0;
     this.rideID = 0;
     this.origin = orig;
@@ -29,8 +32,9 @@ public class Ride {
     this.guests = new ArrayList<>(spots);
   }
 
-  public Ride(City orig, City dest, String time) {
-    this.departureTime = time;
+  public Ride(City orig, City dest, Date newTime) {
+    this.time = newTime;
+    //this.departureTime = time;
     this.rideID = 0;
     this.origin = orig;
     this.destination = dest;
@@ -68,9 +72,14 @@ public class Ride {
   }
 
   public City getOrigin() {return this.origin;}
+  public City getDestination() {return this.destination;}
   public int getRideScore() {
     return this.rideScore;
   }
+
+  //public String getTime() {return this.departureTime;}
+
+  public Date getTime() {return this.time;}
 
   public boolean hasSpace() {return this.spotsLeft > 0;}
 

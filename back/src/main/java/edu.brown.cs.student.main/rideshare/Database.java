@@ -1,5 +1,6 @@
 package edu.brown.cs.student.main.rideshare;
 
+import edu.brown.cs.student.main.ridesorters.DateCompare;
 import edu.brown.cs.student.main.ridesorters.DistanceCompare;
 import edu.brown.cs.student.main.ridesorters.IDCompare;
 import edu.brown.cs.student.main.ridesorters.ScoreCompare;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -46,17 +48,8 @@ public class Database {
     }
   }
 
-//  public void joinByID(Guest guest, int id) {
-//    for (Ride checkRide : this.rides) {
-//      if (checkRide.idMatch(id)) {
-//        checkRide.addGuest(guest, 0);
-//        return;
-//      }
-//    }
-//  }
-
   // add time
-  public void createRide(City orig, City dest, RideType type, int spotsLeft, Guest host, String time) {
+  public void createRide(City orig, City dest, RideType type, int spotsLeft, Guest host, Date time) {
     Ride newRide = new Ride(orig, dest, type, spotsLeft, host, time);
     if (!this.rides.contains(newRide)) {
       newRide.setRideID(this.lastID);
@@ -112,14 +105,18 @@ public class Database {
   }
 
   public void filterByScoreUser() {
-    Collections.sort(this.rides, Comparator.comparingInt(ride -> Math.abs(ride.getRideScore() - this.currentUserScore)));
+    Collections.sort(this.rides, Comparator.comparingInt(ride ->
+        Math.abs(ride.getRideScore() - this.currentUserScore)));
   }
 
   public void filterByDate() {
+    DateCompare compare = new DateCompare();
+    Collections.sort(this.rides, compare);
 
   }
-  public void filterByDateUser() {
 
+  public void filterByDateUser() {
+    Collections.sort(this.rides, Comparator.comparingLong(ride -> Math.abs(ride.getTime().getTime() - this.pending.getTime().getTime())));
   }
 
   public void filterByDistance() {
@@ -128,7 +125,9 @@ public class Database {
   }
 
   public void filterByDistanceUser() {
-    Collections.sort(this.rides, Comparator.comparingDouble(ride -> Math.abs(this.pending.getOrigin().compareDistance(ride.getOrigin()))));
+    Collections.sort(this.rides, Comparator.comparingDouble(ride -> Math.abs(
+        this.pending.getOrigin().compareDistance(ride.getOrigin()) +
+            this.pending.getDestination().compareDistance(ride.getDestination()))));
   }
 
   public void filterByID() {
@@ -188,13 +187,17 @@ public class Database {
   public void setCurrentUser(Guest guest) {
     this.currentUser = guest;
   }
+
   public Guest getCurrentUser() {return this.currentUser;}
+
   public int getCurrentUserScore() {return this.currentUserScore;}
+
   public void setCurrentUserScore(int score) {this.currentUserScore = score;};
 
   public boolean hasPending() {
     return (this.pending != null);
   }
+
   public boolean hasCurrentUser() {return (this.currentUser != null);}
 
   public Ride getPending() {

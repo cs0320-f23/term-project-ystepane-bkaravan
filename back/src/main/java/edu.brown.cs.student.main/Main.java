@@ -25,7 +25,10 @@ import edu.brown.cs.student.main.rideshare.Ride;
 import edu.brown.cs.student.main.rideshare.RideType;
 import edu.brown.cs.student.main.server.Storage;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import spark.Spark;
 
@@ -80,10 +83,22 @@ public class Main {
   public static void populateDb(Database db) {
     City orig1 = new City("BostonTest",10.0, 10.0, true);
     City dest1 = new City("ProvTest", -25.0, 32.0, false);
+
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    Date newDate1 = null;
+    Date newDate2 = null;
+    try {
+      newDate1 = dateFormat.parse("2023-12-18 13:45");
+      newDate2 = dateFormat.parse("2024-01-13 08:30");
+    } catch (
+        ParseException e) {
+      System.out.println(e);
+    }
+
     Guest hostTest = new Guest("Julia", "4134556774", "sample_email@brown.edu");
     Guest hostTest2 = new Guest("Kevin Mighty", "9014569434", "cool_email2@brown.edu");
-    db.createRide(orig1, dest1, RideType.DRIVER, 3, hostTest, "2024-01-13 08:30");
-    Ride testRide = new Ride(orig1, dest1, RideType.TAXI, 2, hostTest2, "2023-12-18 13:45");
+    db.createRide(orig1, dest1, RideType.DRIVER, 3, hostTest, newDate2);
+    Ride testRide = new Ride(orig1, dest1, RideType.TAXI, 2, hostTest2, newDate1);
     db.addRide(testRide);
     //System.out.println(db);
     Guest testGuest = new Guest("Bohdan", "phony", "email");
