@@ -57,6 +57,7 @@ public class Main {
     // our handlers
     Database testdata = new Database();
     populateDb(testdata);
+    System.out.println(testdata);
     Storage csvStorage = new Storage();
     Spark.get("loadcsv", new LoadHandler(csvStorage));
     Spark.get("viewcsv", new ViewHandler(csvStorage));

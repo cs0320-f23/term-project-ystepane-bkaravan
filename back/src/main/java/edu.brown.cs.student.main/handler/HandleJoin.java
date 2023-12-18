@@ -7,6 +7,7 @@ import edu.brown.cs.student.main.rideshare.Database;
 import edu.brown.cs.student.main.rideshare.Guest;
 import edu.brown.cs.student.main.rideshare.Ride;
 import edu.brown.cs.student.main.rideshare.RideType;
+import edu.brown.cs.student.main.ridesorters.DateAdapter;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class HandleJoin implements Route {
 
   @Override
   public Object handle(Request request, Response response) {
-    Moshi moshi = new Moshi.Builder().build();
+    Moshi moshi = new Moshi.Builder().add(new DateAdapter()).build();
     Type mapStringObj = Types.newParameterizedType(Map.class, String.class, Object.class);
     JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObj);
     Map<String, Object> responseMap = new HashMap<>();

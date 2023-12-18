@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Ride {
 
-  private Date time;
+  private final Date time;
   private int rideID;
   private int rideScore;
   private final City origin;
@@ -91,7 +91,7 @@ public class Ride {
   @Override
   public String toString() {
     String toRet = "";
-    toRet = toRet + "ID: " + this.rideID + origin.getName() + " " + destination.getName() + " " + this.type + " "
+    toRet = toRet + "ID: " + this.rideID + " " + origin.getName() + " " + destination.getName() + " " + this.type + " "
         + this.host.getName() + " " + this.spotsLeft + " " + this.guests;
     return toRet;
   }

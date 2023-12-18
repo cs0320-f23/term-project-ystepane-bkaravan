@@ -350,7 +350,7 @@ function isGuest(rjson: any): rjson is Guest {
 interface Ride {
   rideID: number;
   rideScore: number;
-  departureTime: string;
+  time: string;
   destination: City;
   guests: Guest[];
   host: Guest;
@@ -362,7 +362,7 @@ interface Ride {
 function isRide(rjson: any): rjson is Ride {
   if (!("rideID" in rjson)) return false;
   if (!("rideScore" in rjson)) return false;
-  if (!("departureTime" in rjson)) return false;
+  if (!("time" in rjson)) return false;
   if (!("destination" in rjson)) return false;
   if (!("guests" in rjson)) return false;
   if (!("host" in rjson)) return false;
@@ -407,7 +407,7 @@ function printDb(json: ShowProperties) {
     let pend_ride = json.pending;
     if (isRide(pend_ride)) {
       toRet[1] = [
-        pend_ride.departureTime.toString(),
+        pend_ride.time.toString(),
         addCity(pend_ride.origin),
         addCity(pend_ride.destination),
         addGuest(pend_ride.host),
@@ -427,7 +427,7 @@ function printDb(json: ShowProperties) {
     if (isRide(ride)) {
       current.push(ride.rideID.toString());
       current.push(ride.rideScore.toString());
-      current.push(ride.departureTime);
+      current.push(ride.time);
       if (isCity(ride.origin)) {
         current.push(addCity(ride.origin));
       }
