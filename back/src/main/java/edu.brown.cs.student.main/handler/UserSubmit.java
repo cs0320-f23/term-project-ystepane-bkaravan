@@ -25,7 +25,7 @@ public class UserSubmit implements Route {
 
     Guest currentUser = new Guest(formData.get(0), formData.get(1), formData.get(2));
     Integer currentUserScore = Integer.parseInt(formData.get(3)) + Integer.parseInt(formData.get(4)) + Integer.parseInt(formData.get(5));
-
+    System.out.println(formData);
     this.base.setCurrentUser(currentUser);
     this.base.setCurrentUserScore(currentUserScore);
 

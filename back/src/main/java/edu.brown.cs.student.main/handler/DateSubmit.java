@@ -41,7 +41,7 @@ public class DateSubmit implements Route {
     City dest = new City(test1.get(4), Double.parseDouble(test1.get(5)), Double.parseDouble(test1.get(6)), false);
     Ride pending = new Ride(origin, dest, newDate);
     this.base.setPending(pending);
-
+    System.out.println(test1);
     return null;
   }
 

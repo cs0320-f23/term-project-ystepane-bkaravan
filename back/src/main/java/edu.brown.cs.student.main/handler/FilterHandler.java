@@ -12,7 +12,8 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class FilterHandler implements Route {
+public class
+FilterHandler implements Route {
   private final Database base;
 
   public FilterHandler(Database base) {
