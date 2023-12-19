@@ -12,6 +12,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+
 /**
  * This is a get endpoint that handles the request for filtering the database
  */

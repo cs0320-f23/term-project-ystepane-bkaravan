@@ -114,7 +114,8 @@ public class Database {
   }
 
   public void filterByDateUser() {
-    Collections.sort(this.rides, Comparator.comparingLong(ride -> Math.abs(ride.getTime().getTime() - this.pending.getTime().getTime())));
+    Collections.sort(this.rides, Comparator.comparingLong(ride ->
+        Math.abs(ride.getTime().getTime() - this.pending.getTime().getTime())));
   }
 
   public void filterByDistance() {
@@ -132,7 +133,6 @@ public class Database {
     IDCompare compare = new IDCompare();
     Collections.sort(this.rides, compare);
   }
-
 
   public boolean handleFilter(String mode) {
     return switch (mode) {
