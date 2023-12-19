@@ -4,7 +4,7 @@ This is the Term Project for CS32 at Brown University.
 
 ### _Completed by Julia Stepanenko (ystepane) and Bohdan Karavan (bkaravan)._
 
-The project took about _*30 hours*_ to complete.
+The project took about _*45 hours*_ to complete.
 
 Github [repo link](https://github.com/cs0320-f23/term-project-ystepane-bkaravan)!
 
@@ -22,9 +22,9 @@ The user can create their own ride and add it to the database, join an existing 
 
 The `Main` class creates the server which is listed under port 2020. The server calls the functions from the Handler in date form, user form, create ride, join ride, and filter ride.
 
-The `DateSubmit` class handles the post request from the date form and adds the date and time information to the database.
+The `DateSubmit` class handles the post request from the date form and adds the date and time information as a "pending ride" to the database.
 
-The `UserSubmit` class handles the post request from the user form and adds the user information to the database.
+The `UserSubmit` class handles the post request from the user form and adds the user information as a "current user" to the database.
 
 The `HandleCreate` class handles the get request from the create ride command and creates a new ride object with the given parameters.
 
@@ -34,9 +34,9 @@ The `FilterHandler` class handles the get request from the filter ride command a
 
 ### Commands
 
-`create`: a command that allows the user to create a new ride with the given origin, destination, ride type, number of seats, host, and date.
+`create` + `spots` + `type`: a command that allows the user to create a new ride with the given origin, destination, ride type, number of seats, host, and date, given that a pending ride has been created and user information has been saved
 
-`join`: a command that allows the user to join an existing ride with the given ride ID and guest.
+`join` + `id`: a command that allows the user to join an existing ride with the given ride ID and guest, given that the user's information has been saved.
 
 `filter` + `time` /`distance`/`score`/`id`: a command that allows the user to filter the existing rides by the date, distance from the origin/destination entered, ride score or ride id.
 
@@ -48,9 +48,19 @@ To accomadate the project to be more user-friendly, small features were implemen
 
 ## Testing Suites
 
-The test suit has not been created to check the functionality of the tool.
+Because of the time constraint and us being a group of two, we did not create a testing suit for this project. Rather, we were testing by doing and actually using our app in rather robust ways. However, if we had more time, here are some things we would definitely test:
 
-The project uses JUnit to write unit tests and integration tests for the back-end server. The tests cover different endpoints and handlers, as well as different scenarios and edge cases.
+- Every method that we can unit test on the back end. These would mainly include tests for the methods in the Database and Ride classes
+
+- Take care with filtering: filtering is a good way to use some robust fuzz testing on the backend
+
+- Use playwright for basic functionality: user is able to use any commands in any order, without the code breaking
+
+- Use playwright to check the POST forms are getting to the backend
+
+- Use playwright to check the error messages on the front. For example, what happens if the user is trying to join a ride that does not exist? A ride that is full? Or create the ride that has an inapprorpiate type? We caught a significant amount of these bugs, but there are still inconsistancies to work on.
+
+We got really familiar with playwright and writing unit tests over the course of this semester, and with more time and/or team members, we are sure that we could create a representative test suite.
 
 ## Using the Project
 
@@ -64,38 +74,15 @@ To begin, clone the GitHub repository to your local machine.
 
 • Enter commands in the command prompt and see the results on the web app.
 
-For developers:
+• Create a pending ride via the prompts on the map
 
-After starting the back-end server, navigate to http://localhost:2020https://code-care.com/blog/ride-sharing-app-development/ and enter your requests as appropriate endpoints with queries.
+• Save your user information in the little prompt window above the command line
 
-Here are the examples of how to use the page:
-
-• create: To create a new ride, enter create <origin> <destination> <ride type> <number of seats> <host> <date>.
-
-• join: To join an existing ride, enter join <ride ID> <guest>.
-
-• filter: To filter the existing rides, enter filter <origin> <destination> <ride type> <number of seats> <date>.
-
-• show: To see the details of a specific ride, enter show <ride ID>.
-Here are the examples of how to use the page:
-`broadband`:
-To look for a State and a county, nothing needs to be loaded. Just enter `broadband <state> <county>`. Only 3 arguments are allowed. Not complete search is allowed: this means that a user may input "Rhode" as state and "Rhode Island" will be found.
-
-`reload`:
-`reload` endpoint was implemented in order to support for clearing the storage and better testing. It doesn't contain any inputs and serves as an endpoint for back end.
-
-`bb`:
-`bb` awaits for the following inputs:
-filepath, minimum latitude `minlat`, minimum longitude `minlon`, and step `step`.
+• Use the above mention commands and enjoy the ride!
 
 ## Building tests
 
-Appropriate tests for the behavior of the web app were written.
-
-Different shapes of command and result were tested.
-From different reachable states, tests were performed.
-
-To run the tests, we used the GearUp guide and worked with Playwright.
+To run the tests (from our previous sptrints, but they should still work), we used the GearUp guide and worked with Playwright.
 To build and run a test, input `npx playwright test` which runs tests headless (does not open the browser) in the background. You can also use `npx playwright show-report` which gives more detailed information on test progression.
 
 `npx playwright test --ui` opens a UI to explore what the web app looks like as the test is occurring. There, a user can navigate between App.spec.ts and mockTests.spec.ts, where the two main testing suits are located.
@@ -115,6 +102,8 @@ Another implementation bug is if the user wants to input any of the arguments as
 ## Future additions
 
 We planned to add Firebase and authentication with Brown emails to our project, but we did not get to implement them due to the lack of resources and time. We are a group of two and we had to prioritize the core features and functionalities of our app.
+
+We are also hoping to enhance our features for the algorithmic complexity. As of now, the skeleton is there, but it provides not much use for the actual app. We are thinking about different ways of scoring user's preferences, them being adding weights to specific preferences or counting them separately as a List or align them based on the power of 10.
 
 We hope to add these features in the future to improve the security and usability of our app.
 

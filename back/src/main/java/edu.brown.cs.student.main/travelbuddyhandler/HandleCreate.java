@@ -69,7 +69,7 @@ public class HandleCreate implements Route {
       Ride pendingRide = this.base.getPending();
       pendingRide.adjustRide(newHost, newSpots, newType, this.base.getCurrentUserScore()); // we can adjust the points of the ride here
 
-      this.base.delPending();
+      this.base.setPending(null);
       this.base.setCurrentUserScore(0); // double check these
       this.base.setCurrentUser(null);
       this.base.addRide(pendingRide);
