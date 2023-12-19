@@ -5,17 +5,17 @@ import static spark.Spark.after;
 import edu.brown.cs.student.main.handler.AreaSearch;
 import edu.brown.cs.student.main.handler.BoundBox;
 
-import edu.brown.cs.student.main.handler.DatabaseStart;
-import edu.brown.cs.student.main.handler.DateSubmit;
-import edu.brown.cs.student.main.handler.FilterHandler;
-import edu.brown.cs.student.main.handler.HandleCreate;
-import edu.brown.cs.student.main.handler.HandleJoin;
+import edu.brown.cs.student.main.travelbuddyhandler.DatabaseStart;
+import edu.brown.cs.student.main.travelbuddyhandler.DateSubmit;
+import edu.brown.cs.student.main.travelbuddyhandler.FilterHandler;
+import edu.brown.cs.student.main.travelbuddyhandler.HandleCreate;
+import edu.brown.cs.student.main.travelbuddyhandler.HandleJoin;
 import edu.brown.cs.student.main.handler.LoadCensusHandler;
 //import edu.brown.cs.student.main.handler.LoadData;
 import edu.brown.cs.student.main.handler.LoadHandler;
 import edu.brown.cs.student.main.handler.ReloadHandler;
 import edu.brown.cs.student.main.handler.SearchHandler;
-import edu.brown.cs.student.main.handler.UserSubmit;
+import edu.brown.cs.student.main.travelbuddyhandler.UserSubmit;
 import edu.brown.cs.student.main.handler.ViewHandler;
 import edu.brown.cs.student.main.parser.FactoryFailureException;
 import edu.brown.cs.student.main.rideshare.City;
@@ -27,9 +27,7 @@ import edu.brown.cs.student.main.server.Storage;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 import spark.Spark;
 
 /**
@@ -54,10 +52,6 @@ public class Main {
       response.header("Access-Control-Allow-Methods", "*");
     });
 
-    // our handlers
-    Database testdata = new Database();
-    populateDb(testdata);
-    System.out.println(testdata);
     Storage csvStorage = new Storage();
     Spark.get("loadcsv", new LoadHandler(csvStorage));
     Spark.get("viewcsv", new ViewHandler(csvStorage));
@@ -66,6 +60,13 @@ public class Main {
     Spark.get("reload", new ReloadHandler(csvStorage));
     Spark.get("boundbox", new BoundBox());
     Spark.get("areasearch", new AreaSearch());
+
+
+    // THINGS FOR TERM PROJECT BELOW
+    // our handlers
+    Database testdata = new Database();
+    populateDb(testdata);
+    System.out.println(testdata);
     Spark.get("startdb", new DatabaseStart(testdata));
     Spark.post("/dateform", new DateSubmit(testdata));
     Spark.post("/userform", new UserSubmit(testdata));
@@ -81,6 +82,10 @@ public class Main {
     System.out.println("Server started at http://localhost:" + port);
   }
 
+  /**
+   * Helper method that populates our injected database with some mock data to output on the front
+   * @param db, the database to fill
+   */
   public static void populateDb(Database db) {
     City orig1 = new City("BostonTest",10.0, 10.0, true);
     City dest1 = new City("ProvTest", -25.0, 32.0, false);

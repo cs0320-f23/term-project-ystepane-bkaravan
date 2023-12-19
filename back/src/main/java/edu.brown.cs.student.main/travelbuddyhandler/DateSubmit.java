@@ -1,27 +1,42 @@
-package edu.brown.cs.student.main.handler;
+package edu.brown.cs.student.main.travelbuddyhandler;
 
 import edu.brown.cs.student.main.rideshare.City;
 import edu.brown.cs.student.main.rideshare.Database;
-import edu.brown.cs.student.main.rideshare.Guest;
+
 import edu.brown.cs.student.main.rideshare.Ride;
-import edu.brown.cs.student.main.rideshare.RideType;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * This is a class than handles a POST request that covers the map part of the project - we are
+ * getting the coordinate and names of origin and destination and the time of the ride
+ */
 public class DateSubmit implements Route {
 
   private final Database base;
 
+  /**
+   * Constructor and our database
+   * @param base
+   */
   public DateSubmit(Database base) {
     this.base = base;
   }
 
+  /**
+   * handle method that parses the data from the post request and creates a "pending ride" for the
+   * database
+   * @param request
+   * @param response
+   * @return null
+   */
   @Override
   public Object handle(Request request, Response response) {
 

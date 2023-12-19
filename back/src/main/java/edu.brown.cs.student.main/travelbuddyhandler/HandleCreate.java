@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main.handler;
+package edu.brown.cs.student.main.travelbuddyhandler;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -15,6 +15,11 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * A class that handles the create request, if there is a pending ride and enough information from
+ * the user, creates the ride and adds it to the database
+ */
+
 public class HandleCreate implements Route {
 
   private final Database base;
@@ -22,6 +27,14 @@ public class HandleCreate implements Route {
   public HandleCreate(Database base) {
     this.base = base;
   }
+
+  /**
+   * Handle method that performs error checking and creates a new ride from a pending ride, if
+   * possible
+   * @param request
+   * @param response
+   * @return a database with an added ride or an error message, both as a json
+   */
 
   @Override
   public Object handle(Request request, Response response) {
@@ -55,10 +68,12 @@ public class HandleCreate implements Route {
       Guest newHost = this.base.getCurrentUser();
       Ride pendingRide = this.base.getPending();
       pendingRide.adjustRide(newHost, newSpots, newType, this.base.getCurrentUserScore()); // we can adjust the points of the ride here
+
       this.base.delPending();
       this.base.setCurrentUserScore(0); // double check these
       this.base.setCurrentUser(null);
       this.base.addRide(pendingRide);
+
       responseMap.put("database", this.base);
       return adapter.toJson(responseMap);
 

@@ -1,12 +1,12 @@
-package edu.brown.cs.student.main.handler;
+package edu.brown.cs.student.main.travelbuddyhandler;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 import edu.brown.cs.student.main.rideshare.Database;
-import edu.brown.cs.student.main.rideshare.Guest;
+
 import edu.brown.cs.student.main.rideshare.Ride;
-import edu.brown.cs.student.main.rideshare.RideType;
+
 import edu.brown.cs.student.main.ridesorters.DateAdapter;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -14,6 +14,10 @@ import java.util.Map;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+
+/**
+ * Class that handles the join request, given a ride id and enough spots
+ */
 
 public class HandleJoin implements Route {
 
@@ -23,6 +27,12 @@ public class HandleJoin implements Route {
     this.base = base;
   }
 
+  /**
+   * Handle method that checks the database and the ride to join
+   * @param request
+   * @param response
+   * @return the updated database or the error message, both as a json
+   */
   @Override
   public Object handle(Request request, Response response) {
     Moshi moshi = new Moshi.Builder().add(new DateAdapter()).build();
@@ -65,25 +75,6 @@ public class HandleJoin implements Route {
       this.base.setCurrentUser(null);
       this.base.setCurrentUserScore(0);
 
-//      if (this.base.hasCurrentUser()) {
-//        //join the current user with the inputID
-//        Ride potential = this.base.getRideByID(joinID);
-//        if (potential != null) {
-//          if (potential.addGuest(this.base.getCurrentUser(), this.base.getCurrentUserScore())) {
-//            this.base.setCurrentUser(null);
-//            this.base.setCurrentUserScore(0);
-//          } else {
-//            responseMap.put("error", "User might exist or the ride is full");
-//            return adapter.toJson(responseMap);
-//          }
-//        } else {
-//          responseMap.put("error", "ID not found or the ride is full");
-//          return adapter.toJson(responseMap);
-//        }
-//      } else {
-//        responseMap.put("error", "save your information before joining");
-//        return adapter.toJson(responseMap);
-//      }
       responseMap.put("database", this.base);
       return adapter.toJson(responseMap);
     } catch (NumberFormatException e) {

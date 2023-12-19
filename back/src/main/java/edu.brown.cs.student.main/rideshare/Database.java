@@ -5,7 +5,6 @@ import edu.brown.cs.student.main.ridesorters.DistanceCompare;
 import edu.brown.cs.student.main.ridesorters.IDCompare;
 import edu.brown.cs.student.main.ridesorters.ScoreCompare;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -72,12 +71,11 @@ public class Database {
       for (FileItem item : items) {
         if (item.isFormField()) {
           String stringRep = item.getString();
-          //System.out.println("Current item " + stringRep);
           toRet.add(stringRep);
         }
       }
     } catch (FileUploadException e) {
-      System.out.println("oh oh");
+      System.out.println("Form parsing error");
     }
     return toRet;
   }
@@ -134,7 +132,6 @@ public class Database {
     IDCompare compare = new IDCompare();
     Collections.sort(this.rides, compare);
   }
-
 
 
   public boolean handleFilter(String mode) {
